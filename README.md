@@ -77,3 +77,10 @@ To start fuzzing, run the following command:
 ```
 ./USBFuzz  --aflfuzz_opts "-n" --seeddir seeds --os_image <path_to_freebsd_image>
 ```
+
+
+# Windows and MacOS
+
+To fuzz windows and MacOs please, use the code in `macos-win` branch.
+
+For instructions, please refer to OSes/macos/README.md and OSes/windows/README.md.
