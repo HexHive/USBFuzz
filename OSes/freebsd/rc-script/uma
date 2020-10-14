@@ -1,0 +1,36 @@
+#!/bin/sh
+
+. /etc/rc.subr
+
+name="uma"
+# start_cmd="${name}_start"
+start_precmd="${name}_prestart"
+# stop_cmd=start_precmd="${name}_stop"
+stop_postcmd="${name}_poststop"
+
+
+ivshmem_driver="/root/ivshmem.ko"
+
+command="/bin/uma.sh"
+
+uma_prestart()
+{
+    res=`kldstat | grep ivshmem`
+
+    if [ "$res" == "" ]; then
+	   kldload ${ivshmem_driver}
+    fi
+
+    if [ ! -e "/dev/ivshmem0" ] ; then
+	echo "failed to load ivshmem driver"
+	return 1
+    fi
+}
+
+
+uma_poststop() {
+    kldunload ${ivshmem_driver}
+}
+
+load_rc_config $name
+run_rc_command "$1"

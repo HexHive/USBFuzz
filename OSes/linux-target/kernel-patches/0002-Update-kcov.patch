@@ -1,0 +1,153 @@
+From 7e201552b4f32e5b389f86427026557a6183d75d Mon Sep 17 00:00:00 2001
+From: Hui Peng <benquike@163.com>
+Date: Tue, 4 Feb 2020 22:57:57 -0500
+Subject: [PATCH 2/3] Update kcov
+
+---
+ arch/x86/entry/entry_64.S | 10 ++++++++
+ include/linux/sched.h     |  2 ++
+ kernel/Makefile           |  3 +++
+ kernel/kcov.c             | 54 ++++++++++++++++++++++++++++++++-------
+ 4 files changed, 60 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 76942cbd95a1..5f070df84e70 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -604,8 +604,18 @@ SYM_CODE_START_LOCAL(common_interrupt)
+ 	addq	$-0x80, (%rsp)			/* Adjust vector to [-256, -1] range */
+ 	call	interrupt_entry
+ 	UNWIND_HINT_REGS indirect=1
++
++	// save prev on the stack
++	pushq   PER_CPU_VAR(prev_loc)
++	// put 0 to it
++	movq    $0x0,PER_CPU_VAR(prev_loc)	
++
+ 	call	do_IRQ	/* rdi points to pt_regs */
+ 	/* 0(%rsp): old RSP */
++
++	// restore the prev_loc variable
++	popq    PER_CPU_VAR(prev_loc)
++
+ ret_from_intr:
+ 	DISABLE_INTERRUPTS(CLBR_ANY)
+ 	TRACE_IRQS_OFF
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 716ad1d8d95e..72dcc5ad44c5 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1224,6 +1224,8 @@ struct task_struct {
+ 	/* KCOV descriptor wired with this task or NULL: */
+ 	struct kcov			*kcov;
+ 
++        unsigned long			prev_loc;    
++
+ 	/* KCOV common handle for remote coverage collection: */
+ 	u64				kcov_handle;
+ 
+diff --git a/kernel/Makefile b/kernel/Makefile
+index f2cc0d118a0b..c94a94e110fd 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -135,3 +135,6 @@ $(obj)/kheaders_data.tar.xz: FORCE
+ 	$(call cmd,genikh)
+ 
+ clean-files := kheaders_data.tar.xz kheaders.md5
++
++CFLAGS_kcov.o := -O0
++
+diff --git a/kernel/kcov.c b/kernel/kcov.c
+index f50354202dbe..00fa11daf8aa 100644
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -21,6 +21,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/uaccess.h>
+ #include <linux/kcov.h>
++#include <linux/hash.h>
+ #include <linux/refcount.h>
+ #include <linux/log2.h>
+ #include <asm/setup.h>
+@@ -172,6 +173,10 @@ static notrace unsigned long canonicalize_ip(unsigned long ip)
+ 	return ip;
+ }
+ 
++
++extern unsigned char *ivshmem_bar2_map_base(void);
++DEFINE_PER_CPU(unsigned long, prev_loc) = 0;
++
+ /*
+  * Entry point from instrumented code.
+  * This is called once per basic-block/edge.
+@@ -179,20 +184,50 @@ static notrace unsigned long canonicalize_ip(unsigned long ip)
+ void notrace __sanitizer_cov_trace_pc(void)
+ {
+ 	struct task_struct *t;
+-	unsigned long *area;
++	/* unsigned long *area; */
+ 	unsigned long ip = canonicalize_ip(_RET_IP_);
+-	unsigned long pos;
++	unsigned long prev;
++	unsigned long hash;
++	int pos;
++	unsigned char *bitmap;
+ 
+-	t = current;
+-	if (!check_kcov_mode(KCOV_MODE_TRACE_PC, t))
++	bitmap = ivshmem_bar2_map_base();
++
++	if (!bitmap)
+ 		return;
+ 
+-	area = t->kcov_area;
++
++	// printk("%s B called\n", __func__);
++	
++	t = current;
++	/* if (!check_kcov_mode(KCOV_MODE_TRACE_PC, t)) */
++	/* 	return; */
++
++	// area = t->kcov_area;
+ 	/* The first 64-bit word is the number of subsequent PCs. */
+-	pos = READ_ONCE(area[0]) + 1;
+-	if (likely(pos < t->kcov_size)) {
+-		area[pos] = ip;
+-		WRITE_ONCE(area[0], pos);
++	/* pos = READ_ONCE(area[0]) + 1; */
++	/* if (likely(pos < t->kcov_size)) { */
++	/* 	area[pos] = ip; */
++	/* 	WRITE_ONCE(area[0], pos); */
++	/* } */
++
++	
++	if (!in_task()) {
++		prev = this_cpu_read(prev_loc);
++	} else {
++		prev = t->prev_loc;
++	}
++	
++
++	hash = hash_long(ip, BITS_PER_LONG);
++	pos  = (prev ^ hash) & 0xFFFF;
++
++	bitmap[pos] ++;
++
++	if (!in_task()) {
++		this_cpu_write(prev_loc, hash);
++	} else {
++		t->prev_loc = hash;
+ 	}
+ }
+ EXPORT_SYMBOL(__sanitizer_cov_trace_pc);
+@@ -339,6 +374,7 @@ static void kcov_task_reset(struct task_struct *t)
+ 	t->kcov = NULL;
+ 	t->kcov_sequence = 0;
+ 	t->kcov_handle = 0;
++	t->prev_loc = 0;
+ }
+ 
+ void kcov_task_init(struct task_struct *t)
+-- 
+2.20.1
+

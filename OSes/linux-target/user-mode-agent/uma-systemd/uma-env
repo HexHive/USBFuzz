@@ -1,0 +1,2 @@
+# USB_TEST_CMD=/usr/bin/streamer -f jpeg -o /tmp/aaa.jpeg
+

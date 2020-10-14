@@ -1,0 +1,1319 @@
+From 8c44f1ebd08d5c879baf57cbfde3f87048bbafed Mon Sep 17 00:00:00 2001
+From: Hui Peng <benquike@163.com>
+Date: Tue, 4 Feb 2020 22:34:25 -0500
+Subject: [PATCH 3/3] Limit KCOV to usb drivers
+
+---
+ drivers/hid/usbhid/Makefile                          |  2 ++
+ drivers/i2c/busses/Makefile                          |  3 +++
+ drivers/input/joystick/Makefile                      |  1 +
+ drivers/input/misc/Makefile                          |  8 ++++++++
+ drivers/input/mouse/Makefile                         | 12 ++++++++++++
+ drivers/input/tablet/Makefile                        |  3 +++
+ drivers/input/touchscreen/Makefile                   |  9 +++++++++
+ drivers/isdn/hardware/mISDN/Makefile                 |  2 ++
+ drivers/media/rc/Makefile                            |  2 ++
+ drivers/media/usb/Makefile                           |  1 +
+ drivers/media/usb/airspy/Makefile                    |  1 +
+ drivers/media/usb/as102/Makefile                     |  3 +++
+ drivers/media/usb/au0828/Makefile                    |  2 ++
+ drivers/media/usb/b2c2/Makefile                      |  2 ++
+ drivers/media/usb/cpia2/Makefile                     |  2 ++
+ drivers/media/usb/cx231xx/Makefile                   |  2 ++
+ drivers/media/usb/dvb-usb-v2/Makefile                |  2 ++
+ drivers/media/usb/dvb-usb/Makefile                   |  1 +
+ drivers/media/usb/em28xx/Makefile                    |  2 ++
+ drivers/media/usb/go7007/Makefile                    |  2 ++
+ drivers/media/usb/gspca/Makefile                     |  2 ++
+ drivers/media/usb/gspca/gl860/Makefile               |  1 +
+ drivers/media/usb/gspca/m5602/Makefile               |  1 +
+ drivers/media/usb/gspca/stv06xx/Makefile             |  1 +
+ drivers/media/usb/hackrf/Makefile                    |  1 +
+ drivers/media/usb/hdpvr/Makefile                     |  1 +
+ drivers/media/usb/msi2500/Makefile                   |  1 +
+ drivers/media/usb/pulse8-cec/Makefile                |  1 +
+ drivers/media/usb/pvrusb2/Makefile                   |  3 +++
+ drivers/media/usb/pwc/Makefile                       |  1 +
+ drivers/media/usb/rainshadow-cec/Makefile            |  1 +
+ drivers/media/usb/s2255/Makefile                     |  1 +
+ drivers/media/usb/siano/Makefile                     |  1 +
+ drivers/media/usb/stk1160/Makefile                   |  1 +
+ drivers/media/usb/stkwebcam/Makefile                 |  1 +
+ drivers/media/usb/tm6000/Makefile                    |  2 ++
+ drivers/media/usb/ttusb-budget/Makefile              |  2 ++
+ drivers/media/usb/usbtv/Makefile                     |  1 +
+ drivers/media/usb/usbvision/Makefile                 |  3 +++
+ drivers/media/usb/uvc/Makefile                       |  1 +
+ drivers/media/usb/zr364xx/Makefile                   |  1 +
+ drivers/mfd/Makefile                                 |  2 ++
+ drivers/misc/cardreader/Makefile                     |  2 ++
+ drivers/mmc/host/Makefile                            |  2 ++
+ drivers/net/can/usb/Makefile                         |  2 ++
+ drivers/net/can/usb/peak_usb/Makefile                |  2 ++
+ drivers/net/ieee802154/Makefile                      |  3 +++
+ drivers/net/usb/Makefile                             |  2 ++
+ drivers/net/wireless/Makefile                        |  2 ++
+ drivers/net/wireless/ath/ar5523/Makefile             |  2 ++
+ drivers/net/wireless/ath/ath10k/Makefile             |  3 +++
+ drivers/net/wireless/ath/ath6kl/Makefile             |  3 +++
+ drivers/net/wireless/ath/ath9k/Makefile              |  2 ++
+ drivers/net/wireless/ath/carl9170/Makefile           |  3 +++
+ drivers/net/wireless/intersil/orinoco/Makefile       |  2 ++
+ drivers/net/wireless/intersil/p54/Makefile           |  2 ++
+ drivers/net/wireless/marvell/libertas/Makefile       |  2 ++
+ drivers/net/wireless/marvell/libertas_tf/Makefile    |  3 +++
+ drivers/net/wireless/marvell/mwifiex/Makefile        |  2 ++
+ drivers/net/wireless/mediatek/mt7601u/Makefile       |  3 +++
+ drivers/net/wireless/ralink/rt2x00/Makefile          |  2 ++
+ .../net/wireless/realtek/rtl818x/rtl8187/Makefile    |  3 +++
+ drivers/net/wireless/realtek/rtlwifi/Makefile        |  2 ++
+ .../net/wireless/realtek/rtlwifi/rtl8192cu/Makefile  |  2 ++
+ drivers/net/wireless/rsi/Makefile                    |  2 ++
+ drivers/net/wireless/zydas/Makefile                  |  2 ++
+ drivers/net/wireless/zydas/zd1211rw/Makefile         |  2 ++
+ drivers/nfc/Makefile                                 |  5 +++++
+ drivers/nfc/nfcmrvl/Makefile                         |  2 ++
+ drivers/nfc/pn533/Makefile                           |  2 ++
+ drivers/staging/greybus/Makefile                     |  2 ++
+ drivers/staging/most/cdev/Makefile                   |  3 +++
+ drivers/staging/most/net/Makefile                    |  3 +++
+ drivers/staging/most/sound/Makefile                  |  2 ++
+ drivers/staging/most/usb/Makefile                    |  3 +++
+ drivers/staging/most/video/Makefile                  |  3 +++
+ drivers/staging/rtl8188eu/Makefile                   |  3 +++
+ drivers/staging/vt6656/Makefile                      |  3 +++
+ drivers/staging/wlan-ng/Makefile                     |  2 ++
+ drivers/usb/atm/Makefile                             |  1 +
+ drivers/usb/c67x00/Makefile                          |  1 +
+ drivers/usb/chipidea/Makefile                        |  1 +
+ drivers/usb/class/Makefile                           |  1 +
+ drivers/usb/common/Makefile                          |  1 +
+ drivers/usb/core/Makefile                            |  1 +
+ drivers/usb/core/driver.c                            |  3 +++
+ drivers/usb/dwc2/Makefile                            |  2 ++
+ drivers/usb/dwc3/Makefile                            |  2 ++
+ drivers/usb/early/Makefile                           |  1 +
+ drivers/usb/gadget/Makefile                          |  1 +
+ drivers/usb/host/Makefile                            |  1 +
+ drivers/usb/image/Makefile                           |  1 +
+ drivers/usb/isp1760/Makefile                         |  1 +
+ drivers/usb/misc/Makefile                            |  1 +
+ drivers/usb/mon/Makefile                             |  1 +
+ drivers/usb/mtu3/Makefile                            |  1 +
+ drivers/usb/musb/Makefile                            |  1 +
+ drivers/usb/phy/Makefile                             |  1 +
+ drivers/usb/renesas_usbhs/Makefile                   |  1 +
+ drivers/usb/serial/Makefile                          |  1 +
+ drivers/usb/storage/Makefile                         |  1 +
+ drivers/usb/typec/Makefile                           |  2 ++
+ drivers/usb/usbip/Makefile                           |  1 +
+ drivers/w1/masters/Makefile                          |  3 +++
+ drivers/watchdog/Makefile                            |  2 ++
+ sound/usb/6fire/Makefile                             |  1 +
+ sound/usb/Makefile                                   |  1 +
+ sound/usb/bcd2000/Makefile                           |  2 ++
+ sound/usb/caiaq/Makefile                             |  1 +
+ sound/usb/hiface/Makefile                            |  1 +
+ sound/usb/line6/Makefile                             |  1 +
+ sound/usb/misc/Makefile                              |  1 +
+ sound/usb/usx2y/Makefile                             |  2 ++
+ 113 files changed, 226 insertions(+)
+
+diff --git a/drivers/hid/usbhid/Makefile b/drivers/hid/usbhid/Makefile
+index b6349e30bd93..656ced5d308d 100644
+--- a/drivers/hid/usbhid/Makefile
++++ b/drivers/hid/usbhid/Makefile
+@@ -11,3 +11,5 @@ obj-$(CONFIG_USB_HID)		+= usbhid.o
+ obj-$(CONFIG_USB_KBD)		+= usbkbd.o
+ obj-$(CONFIG_USB_MOUSE)		+= usbmouse.o
+ 
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index 3ab8aebc39c9..cae8cb6b5120 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -126,12 +126,15 @@ obj-$(CONFIG_I2C_ZX2967)	+= i2c-zx2967.o
+ 
+ # External I2C/SMBus adapter drivers
+ obj-$(CONFIG_I2C_DIOLAN_U2C)	+= i2c-diolan-u2c.o
++KCOV_INSTRUMENT_i2c-diolan-u2c.o := y
+ obj-$(CONFIG_I2C_DLN2)		+= i2c-dln2.o
+ obj-$(CONFIG_I2C_PARPORT)	+= i2c-parport.o
+ obj-$(CONFIG_I2C_PARPORT_LIGHT)	+= i2c-parport-light.o
+ obj-$(CONFIG_I2C_ROBOTFUZZ_OSIF)	+= i2c-robotfuzz-osif.o
++KCOV_INSTRUMENT_i2c-robotfuzz-osif.o := y
+ obj-$(CONFIG_I2C_TAOS_EVM)	+= i2c-taos-evm.o
+ obj-$(CONFIG_I2C_TINY_USB)	+= i2c-tiny-usb.o
++KCOV_INSTRUMENT_i2c-tiny-usb.o := y
+ obj-$(CONFIG_I2C_VIPERBOARD)	+= i2c-viperboard.o
+ 
+ # Other I2C/SMBus bus drivers
+diff --git a/drivers/input/joystick/Makefile b/drivers/input/joystick/Makefile
+index 8656023f6ef5..4e5a6991f6ed 100644
+--- a/drivers/input/joystick/Makefile
++++ b/drivers/input/joystick/Makefile
+@@ -35,5 +35,6 @@ obj-$(CONFIG_JOYSTICK_TWIDJOY)		+= twidjoy.o
+ obj-$(CONFIG_JOYSTICK_WARRIOR)		+= warrior.o
+ obj-$(CONFIG_JOYSTICK_WALKERA0701)	+= walkera0701.o
+ obj-$(CONFIG_JOYSTICK_XPAD)		+= xpad.o
++KCOV_INSTRUMENT_xpad.o := y
+ obj-$(CONFIG_JOYSTICK_ZHENHUA)		+= zhenhua.o
+ 
+diff --git a/drivers/input/misc/Makefile b/drivers/input/misc/Makefile
+index 8fd187f314bd..c358ac37440c 100644
+--- a/drivers/input/misc/Makefile
++++ b/drivers/input/misc/Makefile
+@@ -86,3 +86,11 @@ obj-$(CONFIG_INPUT_XEN_KBDDEV_FRONTEND)	+= xen-kbdfront.o
+ obj-$(CONFIG_INPUT_YEALINK)		+= yealink.o
+ obj-$(CONFIG_INPUT_IDEAPAD_SLIDEBAR)	+= ideapad_slidebar.o
+ 
++
++KCOV_INSTRUMENT_ati_remote2.o := y
++KCOV_INSTRUMENT_ims-pcu.o := y
++KCOV_INSTRUMENT_ims-pcu.o := y
++KCOV_INSTRUMENT_keyspan_remote.o := y
++KCOV_INSTRUMENT_powermate.o := y
++KCOV_INSTRUMENT_yealink.o := y
++
+diff --git a/drivers/input/mouse/Makefile b/drivers/input/mouse/Makefile
+index e49f08565076..ee29ed6a0448 100644
+--- a/drivers/input/mouse/Makefile
++++ b/drivers/input/mouse/Makefile
+@@ -6,9 +6,16 @@
+ # Each configuration option enables a list of files.
+ 
+ obj-$(CONFIG_MOUSE_AMIGA)		+= amimouse.o
++
+ obj-$(CONFIG_MOUSE_APPLETOUCH)		+= appletouch.o
++KCOV_INSTRUMENT_appletouch.o := y
++
++
+ obj-$(CONFIG_MOUSE_ATARI)		+= atarimouse.o
++
+ obj-$(CONFIG_MOUSE_BCM5974)		+= bcm5974.o
++KCOV_INSTRUMENT_bcm5974.o := y
++
+ obj-$(CONFIG_MOUSE_CYAPA)		+= cyapatp.o
+ obj-$(CONFIG_MOUSE_ELAN_I2C)		+= elan_i2c.o
+ obj-$(CONFIG_MOUSE_GPIO)		+= gpio_mouse.o
+@@ -22,7 +29,12 @@ obj-$(CONFIG_MOUSE_PXA930_TRKBALL)	+= pxa930_trkball.o
+ obj-$(CONFIG_MOUSE_RISCPC)		+= rpcmouse.o
+ obj-$(CONFIG_MOUSE_SERIAL)		+= sermouse.o
+ obj-$(CONFIG_MOUSE_SYNAPTICS_I2C)	+= synaptics_i2c.o
++
+ obj-$(CONFIG_MOUSE_SYNAPTICS_USB)	+= synaptics_usb.o
++
++KCOV_INSTRUMENT_synaptics_usb.o := y
++
++
+ obj-$(CONFIG_MOUSE_VSXXXAA)		+= vsxxxaa.o
+ 
+ cyapatp-objs := cyapa.o cyapa_gen3.o cyapa_gen5.o cyapa_gen6.o
+diff --git a/drivers/input/tablet/Makefile b/drivers/input/tablet/Makefile
+index 8279ccc18b0a..d0e682c33d4a 100644
+--- a/drivers/input/tablet/Makefile
++++ b/drivers/input/tablet/Makefile
+@@ -11,3 +11,6 @@ obj-$(CONFIG_TABLET_USB_HANWANG) += hanwang.o
+ obj-$(CONFIG_TABLET_USB_KBTAB)	+= kbtab.o
+ obj-$(CONFIG_TABLET_USB_PEGASUS) += pegasus_notetaker.o
+ obj-$(CONFIG_TABLET_SERIAL_WACOM4) += wacom_serial4.o
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/input/touchscreen/Makefile b/drivers/input/touchscreen/Makefile
+index 94c6162409b3..1cc846c20695 100644
+--- a/drivers/input/touchscreen/Makefile
++++ b/drivers/input/touchscreen/Makefile
+@@ -64,7 +64,11 @@ obj-$(CONFIG_TOUCHSCREEN_HP600)		+= hp680_ts_input.o
+ obj-$(CONFIG_TOUCHSCREEN_HP7XX)		+= jornada720_ts.o
+ obj-$(CONFIG_TOUCHSCREEN_IPAQ_MICRO)	+= ipaq-micro-ts.o
+ obj-$(CONFIG_TOUCHSCREEN_HTCPEN)	+= htcpen.o
++
+ obj-$(CONFIG_TOUCHSCREEN_USB_COMPOSITE)	+= usbtouchscreen.o
++
++KCOV_INSTRUMENT_usbtouchscreen.o := y
++
+ obj-$(CONFIG_TOUCHSCREEN_PCAP)		+= pcap_ts.o
+ obj-$(CONFIG_TOUCHSCREEN_PENMOUNT)	+= penmount.o
+ obj-$(CONFIG_TOUCHSCREEN_PIXCIR)	+= pixcir_i2c_ts.o
+@@ -77,7 +81,12 @@ obj-$(CONFIG_TOUCHSCREEN_ST1232)	+= st1232.o
+ obj-$(CONFIG_TOUCHSCREEN_STMFTS)	+= stmfts.o
+ obj-$(CONFIG_TOUCHSCREEN_STMPE)		+= stmpe-ts.o
+ obj-$(CONFIG_TOUCHSCREEN_SUN4I)		+= sun4i-ts.o
++
+ obj-$(CONFIG_TOUCHSCREEN_SUR40)		+= sur40.o
++
++KCOV_INSTRUMENT_sur40.o := y
++
++
+ obj-$(CONFIG_TOUCHSCREEN_SURFACE3_SPI)	+= surface3_spi.o
+ obj-$(CONFIG_TOUCHSCREEN_TI_AM335X_TSC)	+= ti_am335x_tsc.o
+ obj-$(CONFIG_TOUCHSCREEN_TOUCHIT213)	+= touchit213.o
+diff --git a/drivers/isdn/hardware/mISDN/Makefile b/drivers/isdn/hardware/mISDN/Makefile
+index 3f50f8c4753f..a340cca43cfa 100644
+--- a/drivers/isdn/hardware/mISDN/Makefile
++++ b/drivers/isdn/hardware/mISDN/Makefile
+@@ -16,4 +16,6 @@ obj-$(CONFIG_MISDN_NETJET) += netjet.o
+ obj-$(CONFIG_MISDN_IPAC) += mISDNipac.o
+ obj-$(CONFIG_MISDN_ISAR) += mISDNisar.o
+ 
++KCOV_INSTRUMENT := y
++
+ obj-$(CONFIG_MISDN_HDLC) += isdnhdlc.o
+diff --git a/drivers/media/rc/Makefile b/drivers/media/rc/Makefile
+index 48d23433b3c0..d7418df3ae74 100644
+--- a/drivers/media/rc/Makefile
++++ b/drivers/media/rc/Makefile
+@@ -49,4 +49,6 @@ obj-$(CONFIG_IR_SIR) += sir_ir.o
+ obj-$(CONFIG_IR_MTK) += mtk-cir.o
+ obj-$(CONFIG_IR_ZX) += zx-irdec.o
+ obj-$(CONFIG_IR_TANGO) += tango-ir.o
++
++KCOV_INSTRUMENT := y
+ obj-$(CONFIG_RC_XBOX_DVD) += xbox_remote.o
+diff --git a/drivers/media/usb/Makefile b/drivers/media/usb/Makefile
+index 21e46b10caa5..7ca456830ea2 100644
+--- a/drivers/media/usb/Makefile
++++ b/drivers/media/usb/Makefile
+@@ -27,3 +27,4 @@ obj-$(CONFIG_VIDEO_GO7007) += go7007/
+ obj-$(CONFIG_DVB_AS102) += as102/
+ obj-$(CONFIG_USB_PULSE8_CEC) += pulse8-cec/
+ obj-$(CONFIG_USB_RAINSHADOW_CEC) += rainshadow-cec/
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/airspy/Makefile b/drivers/media/usb/airspy/Makefile
+index d2ba2ca03297..b323452b7909 100644
+--- a/drivers/media/usb/airspy/Makefile
++++ b/drivers/media/usb/airspy/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_AIRSPY)              += airspy.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/as102/Makefile b/drivers/media/usb/as102/Makefile
+index de671aed5dfc..e20c70ff472d 100644
+--- a/drivers/media/usb/as102/Makefile
++++ b/drivers/media/usb/as102/Makefile
+@@ -5,3 +5,6 @@ dvb-as102-objs := as102_drv.o as102_fw.o as10x_cmd.o as10x_cmd_stream.o \
+ obj-$(CONFIG_DVB_AS102) += dvb-as102.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/media/usb/au0828/Makefile b/drivers/media/usb/au0828/Makefile
+index 4347812d101a..6bafb9caa505 100644
+--- a/drivers/media/usb/au0828/Makefile
++++ b/drivers/media/usb/au0828/Makefile
+@@ -15,3 +15,5 @@ ccflags-y += -I $(srctree)/drivers/media/tuners
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
+ 
+ ccflags-y += $(extra-cflags-y) $(extra-cflags-m)
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/b2c2/Makefile b/drivers/media/usb/b2c2/Makefile
+index 6ae0e43afb35..e20f4c537bae 100644
+--- a/drivers/media/usb/b2c2/Makefile
++++ b/drivers/media/usb/b2c2/Makefile
+@@ -3,3 +3,5 @@ b2c2-flexcop-usb-objs := flexcop-usb.o
+ obj-$(CONFIG_DVB_B2C2_FLEXCOP_USB) += b2c2-flexcop-usb.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/common/b2c2/
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/cpia2/Makefile b/drivers/media/usb/cpia2/Makefile
+index 05664141f4d7..4e1704ec459f 100644
+--- a/drivers/media/usb/cpia2/Makefile
++++ b/drivers/media/usb/cpia2/Makefile
+@@ -2,3 +2,5 @@
+ cpia2-objs	:= cpia2_v4l.o cpia2_usb.o cpia2_core.o
+ 
+ obj-$(CONFIG_VIDEO_CPIA2) += cpia2.o
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/media/usb/cx231xx/Makefile b/drivers/media/usb/cx231xx/Makefile
+index 8acbbcba7d0c..5e2721ef8254 100644
+--- a/drivers/media/usb/cx231xx/Makefile
++++ b/drivers/media/usb/cx231xx/Makefile
+@@ -11,3 +11,5 @@ obj-$(CONFIG_VIDEO_CX231XX_DVB) += cx231xx-dvb.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/tuners
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/dvb-usb-v2/Makefile b/drivers/media/usb/dvb-usb-v2/Makefile
+index 58c0140e19de..428f5d1692a9 100644
+--- a/drivers/media/usb/dvb-usb-v2/Makefile
++++ b/drivers/media/usb/dvb-usb-v2/Makefile
+@@ -47,3 +47,5 @@ obj-$(CONFIG_DVB_USB_ZD1301) += zd1301.o
+ ccflags-y += -I$(srctree)/drivers/media/dvb-frontends
+ ccflags-y += -I$(srctree)/drivers/media/tuners
+ ccflags-y += -I$(srctree)/drivers/media/common
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/dvb-usb/Makefile b/drivers/media/usb/dvb-usb/Makefile
+index 28e4806a87cd..f263ed11c936 100644
+--- a/drivers/media/usb/dvb-usb/Makefile
++++ b/drivers/media/usb/dvb-usb/Makefile
+@@ -84,3 +84,4 @@ ccflags-y += -I$(srctree)/drivers/media/dvb-frontends/
+ # due to tuner-xc3028
+ ccflags-y += -I$(srctree)/drivers/media/tuners
+ ccflags-y += -I$(srctree)/drivers/media/pci/ttpci
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/em28xx/Makefile b/drivers/media/usb/em28xx/Makefile
+index 8c2fc3104561..34d089b2fa42 100644
+--- a/drivers/media/usb/em28xx/Makefile
++++ b/drivers/media/usb/em28xx/Makefile
+@@ -13,3 +13,5 @@ obj-$(CONFIG_VIDEO_EM28XX_RC) += em28xx-rc.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/tuners
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/go7007/Makefile b/drivers/media/usb/go7007/Makefile
+index 712a3507f195..aa3cd3ade426 100644
+--- a/drivers/media/usb/go7007/Makefile
++++ b/drivers/media/usb/go7007/Makefile
+@@ -10,3 +10,5 @@ go7007-y := go7007-v4l2.o go7007-driver.o go7007-i2c.o go7007-fw.o \
+ s2250-y := s2250-board.o
+ 
+ ccflags-$(CONFIG_VIDEO_GO7007_LOADER:m=y) += -I $(srctree)/drivers/media/common
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/gspca/Makefile b/drivers/media/usb/gspca/Makefile
+index 3e3ecbffdf9f..282d0c4ceecf 100644
+--- a/drivers/media/usb/gspca/Makefile
++++ b/drivers/media/usb/gspca/Makefile
+@@ -98,3 +98,5 @@ gspca_zc3xx-objs    := zc3xx.o
+ obj-$(CONFIG_USB_M5602)   += m5602/
+ obj-$(CONFIG_USB_STV06XX) += stv06xx/
+ obj-$(CONFIG_USB_GL860)   += gl860/
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/gspca/gl860/Makefile b/drivers/media/usb/gspca/gl860/Makefile
+index 7bcfa36f12ac..bc18c5b03b9a 100644
+--- a/drivers/media/usb/gspca/gl860/Makefile
++++ b/drivers/media/usb/gspca/gl860/Makefile
+@@ -9,3 +9,4 @@ gspca_gl860-objs := gl860.o \
+ 
+ ccflags-y += -I$(srctree)/drivers/media/usb/gspca
+ 
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/gspca/m5602/Makefile b/drivers/media/usb/gspca/m5602/Makefile
+index 95c9db6dc59c..626d2e542d82 100644
+--- a/drivers/media/usb/gspca/m5602/Makefile
++++ b/drivers/media/usb/gspca/m5602/Makefile
+@@ -10,3 +10,4 @@ gspca_m5602-objs := m5602_core.o \
+ 		    m5602_s5k4aa.o
+ 
+ ccflags-y += -I$(srctree)/drivers/media/usb/gspca
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/gspca/stv06xx/Makefile b/drivers/media/usb/gspca/stv06xx/Makefile
+index c4d7206e0c92..da3215b5fa0e 100644
+--- a/drivers/media/usb/gspca/stv06xx/Makefile
++++ b/drivers/media/usb/gspca/stv06xx/Makefile
+@@ -9,3 +9,4 @@ gspca_stv06xx-objs := stv06xx.o \
+ 
+ ccflags-y += -I$(srctree)/drivers/media/usb/gspca
+ 
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/hackrf/Makefile b/drivers/media/usb/hackrf/Makefile
+index 0ac96d0b8eb6..ce0d256f8c29 100644
+--- a/drivers/media/usb/hackrf/Makefile
++++ b/drivers/media/usb/hackrf/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_HACKRF)              += hackrf.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/hdpvr/Makefile b/drivers/media/usb/hdpvr/Makefile
+index d1d57e3c3e72..8114864141d5 100644
+--- a/drivers/media/usb/hdpvr/Makefile
++++ b/drivers/media/usb/hdpvr/Makefile
+@@ -2,3 +2,4 @@
+ hdpvr-objs	:= hdpvr-control.o hdpvr-core.o hdpvr-video.o hdpvr-i2c.o
+ 
+ obj-$(CONFIG_VIDEO_HDPVR) += hdpvr.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/msi2500/Makefile b/drivers/media/usb/msi2500/Makefile
+index be14390cae19..369c611cf5e3 100644
+--- a/drivers/media/usb/msi2500/Makefile
++++ b/drivers/media/usb/msi2500/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_MSI2500)             += msi2500.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/pulse8-cec/Makefile b/drivers/media/usb/pulse8-cec/Makefile
+index 7816c68bf928..d0cee39860e7 100644
+--- a/drivers/media/usb/pulse8-cec/Makefile
++++ b/drivers/media/usb/pulse8-cec/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_PULSE8_CEC) += pulse8-cec.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/pvrusb2/Makefile b/drivers/media/usb/pvrusb2/Makefile
+index 2e71afc4f6de..acb2f8643197 100644
+--- a/drivers/media/usb/pvrusb2/Makefile
++++ b/drivers/media/usb/pvrusb2/Makefile
+@@ -19,3 +19,6 @@ obj-$(CONFIG_VIDEO_PVRUSB2) += pvrusb2.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/tuners
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/media/usb/pwc/Makefile b/drivers/media/usb/pwc/Makefile
+index ebc53e74990d..f81bf7f156a8 100644
+--- a/drivers/media/usb/pwc/Makefile
++++ b/drivers/media/usb/pwc/Makefile
+@@ -3,3 +3,4 @@ pwc-objs	+= pwc-if.o pwc-misc.o pwc-ctrl.o pwc-v4l.o pwc-uncompress.o
+ pwc-objs	+= pwc-dec1.o pwc-dec23.o pwc-kiara.o pwc-timon.o
+ 
+ obj-$(CONFIG_USB_PWC) += pwc.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/rainshadow-cec/Makefile b/drivers/media/usb/rainshadow-cec/Makefile
+index 47b33c574c3e..a3d2f3a12825 100644
+--- a/drivers/media/usb/rainshadow-cec/Makefile
++++ b/drivers/media/usb/rainshadow-cec/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_RAINSHADOW_CEC) += rainshadow-cec.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/s2255/Makefile b/drivers/media/usb/s2255/Makefile
+index cfc4e73f5c76..9765ae87eef1 100644
+--- a/drivers/media/usb/s2255/Makefile
++++ b/drivers/media/usb/s2255/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_S2255)		+= s2255drv.o
+ 
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/siano/Makefile b/drivers/media/usb/siano/Makefile
+index 758c8686ad46..77033817d94d 100644
+--- a/drivers/media/usb/siano/Makefile
++++ b/drivers/media/usb/siano/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_SMS_USB_DRV) += smsusb.o
+ ccflags-y += -I $(srctree)/drivers/media/common/siano
+ ccflags-y += $(extra-cflags-y) $(extra-cflags-m)
+ 
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/stk1160/Makefile b/drivers/media/usb/stk1160/Makefile
+index b943db01ccf7..74b6abec4994 100644
+--- a/drivers/media/usb/stk1160/Makefile
++++ b/drivers/media/usb/stk1160/Makefile
+@@ -6,3 +6,4 @@ stk1160-y :=	stk1160-core.o \
+ 		stk1160-ac97.o
+ 
+ obj-$(CONFIG_VIDEO_STK1160) += stk1160.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/stkwebcam/Makefile b/drivers/media/usb/stkwebcam/Makefile
+index daa9ae6d48c2..c965247c5f43 100644
+--- a/drivers/media/usb/stkwebcam/Makefile
++++ b/drivers/media/usb/stkwebcam/Makefile
+@@ -3,3 +3,4 @@ stkwebcam-objs	:=	stk-webcam.o stk-sensor.o
+ 
+ obj-$(CONFIG_USB_STKWEBCAM)     += stkwebcam.o
+ 
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/tm6000/Makefile b/drivers/media/usb/tm6000/Makefile
+index 75247a02a485..482870d10d96 100644
+--- a/drivers/media/usb/tm6000/Makefile
++++ b/drivers/media/usb/tm6000/Makefile
+@@ -12,3 +12,5 @@ obj-$(CONFIG_VIDEO_TM6000_DVB) += tm6000-dvb.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/tuners
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/ttusb-budget/Makefile b/drivers/media/usb/ttusb-budget/Makefile
+index 09e42bf312f2..1dd1a88a770d 100644
+--- a/drivers/media/usb/ttusb-budget/Makefile
++++ b/drivers/media/usb/ttusb-budget/Makefile
+@@ -2,3 +2,5 @@
+ obj-$(CONFIG_DVB_TTUSB_BUDGET) += dvb-ttusb-budget.o
+ 
+ ccflags-y += -I $(srctree)/drivers/media/dvb-frontends
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/media/usb/usbtv/Makefile b/drivers/media/usb/usbtv/Makefile
+index 78705bcd064e..444027d739ef 100644
+--- a/drivers/media/usb/usbtv/Makefile
++++ b/drivers/media/usb/usbtv/Makefile
+@@ -4,3 +4,4 @@ usbtv-y := usbtv-core.o \
+ 	usbtv-audio.o
+ 
+ obj-$(CONFIG_VIDEO_USBTV) += usbtv.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/usbvision/Makefile b/drivers/media/usb/usbvision/Makefile
+index 4d8541b9d4f8..706548e10c09 100644
+--- a/drivers/media/usb/usbvision/Makefile
++++ b/drivers/media/usb/usbvision/Makefile
+@@ -2,3 +2,6 @@
+ usbvision-objs  := usbvision-core.o usbvision-video.o usbvision-i2c.o usbvision-cards.o
+ 
+ obj-$(CONFIG_VIDEO_USBVISION) += usbvision.o
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/media/usb/uvc/Makefile b/drivers/media/usb/uvc/Makefile
+index 4f9eee4f81ab..a7453dc7a027 100644
+--- a/drivers/media/usb/uvc/Makefile
++++ b/drivers/media/usb/uvc/Makefile
+@@ -5,3 +5,4 @@ ifeq ($(CONFIG_MEDIA_CONTROLLER),y)
+ uvcvideo-objs  += uvc_entity.o
+ endif
+ obj-$(CONFIG_USB_VIDEO_CLASS) += uvcvideo.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/media/usb/zr364xx/Makefile b/drivers/media/usb/zr364xx/Makefile
+index edab017d499c..b37837e46f07 100644
+--- a/drivers/media/usb/zr364xx/Makefile
++++ b/drivers/media/usb/zr364xx/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_USB_ZR364XX)       += zr364xx.o
+ 
++KCOV_INSTRUMENT := y
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index aed99f08739f..8677b8134d95 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -251,6 +251,8 @@ obj-$(CONFIG_MFD_STM32_TIMERS) 	+= stm32-timers.o
+ obj-$(CONFIG_MFD_MXS_LRADC)     += mxs-lradc.o
+ obj-$(CONFIG_MFD_SC27XX_PMIC)	+= sprd-sc27xx-spi.o
+ obj-$(CONFIG_RAVE_SP_CORE)	+= rave-sp.o
++
++KCOV_INSTRUMENT := y
+ obj-$(CONFIG_MFD_ROHM_BD70528)	+= rohm-bd70528.o
+ obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
+ obj-$(CONFIG_MFD_STMFX) 	+= stmfx.o
+diff --git a/drivers/misc/cardreader/Makefile b/drivers/misc/cardreader/Makefile
+index 1f56267ed2f4..b99e9dbe0e47 100644
+--- a/drivers/misc/cardreader/Makefile
++++ b/drivers/misc/cardreader/Makefile
+@@ -3,3 +3,5 @@ obj-$(CONFIG_MISC_ALCOR_PCI)	+= alcor_pci.o
+ obj-$(CONFIG_MISC_RTSX_PCI)	+= rtsx_pci.o
+ rtsx_pci-objs := rtsx_pcr.o rts5209.o rts5229.o rtl8411.o rts5227.o rts5249.o rts5260.o rts5261.o
+ obj-$(CONFIG_MISC_RTSX_USB)	+= rtsx_usb.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/mmc/host/Makefile b/drivers/mmc/host/Makefile
+index 21d9089e5eda..8c0575f17a96 100644
+--- a/drivers/mmc/host/Makefile
++++ b/drivers/mmc/host/Makefile
+@@ -107,3 +107,5 @@ endif
+ 
+ obj-$(CONFIG_MMC_SDHCI_XENON)	+= sdhci-xenon-driver.o
+ sdhci-xenon-driver-y		+= sdhci-xenon.o sdhci-xenon-phy.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/can/usb/Makefile b/drivers/net/can/usb/Makefile
+index aa0f17c0b2ed..f0953ec609af 100644
+--- a/drivers/net/can/usb/Makefile
++++ b/drivers/net/can/usb/Makefile
+@@ -11,3 +11,5 @@ obj-$(CONFIG_CAN_KVASER_USB) += kvaser_usb/
+ obj-$(CONFIG_CAN_MCBA_USB) += mcba_usb.o
+ obj-$(CONFIG_CAN_PEAK_USB) += peak_usb/
+ obj-$(CONFIG_CAN_UCAN) += ucan.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/can/usb/peak_usb/Makefile b/drivers/net/can/usb/peak_usb/Makefile
+index 80789f91e300..a2f7230ef8f5 100644
+--- a/drivers/net/can/usb/peak_usb/Makefile
++++ b/drivers/net/can/usb/peak_usb/Makefile
+@@ -1,3 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-$(CONFIG_CAN_PEAK_USB) += peak_usb.o
+ peak_usb-y = pcan_usb_core.o pcan_usb.o pcan_usb_pro.o pcan_usb_fd.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/ieee802154/Makefile b/drivers/net/ieee802154/Makefile
+index 0c78b6298060..6b4049a9256f 100644
+--- a/drivers/net/ieee802154/Makefile
++++ b/drivers/net/ieee802154/Makefile
+@@ -6,5 +6,8 @@ obj-$(CONFIG_IEEE802154_CC2520) += cc2520.o
+ obj-$(CONFIG_IEEE802154_ATUSB) += atusb.o
+ obj-$(CONFIG_IEEE802154_ADF7242) += adf7242.o
+ obj-$(CONFIG_IEEE802154_CA8210) += ca8210.o
++
++KCOV_INSTRUMENT := y
++
+ obj-$(CONFIG_IEEE802154_MCR20A) += mcr20a.o
+ obj-$(CONFIG_IEEE802154_HWSIM) += mac802154_hwsim.o
+diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
+index 99fd12be2111..90bb1ce42848 100644
+--- a/drivers/net/usb/Makefile
++++ b/drivers/net/usb/Makefile
+@@ -40,4 +40,6 @@ obj-$(CONFIG_USB_VL600)		+= lg-vl600.o
+ obj-$(CONFIG_USB_NET_QMI_WWAN)	+= qmi_wwan.o
+ obj-$(CONFIG_USB_NET_CDC_MBIM)	+= cdc_mbim.o
+ obj-$(CONFIG_USB_NET_CH9200)	+= ch9200.o
++
++KCOV_INSTRUMENT := y
+ obj-$(CONFIG_USB_NET_AQC111)	+= aqc111.o
+diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
+index 6cfe74515c95..289cbd703e1a 100644
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
+@@ -25,7 +25,9 @@ obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
+ obj-$(CONFIG_PCMCIA_WL3501)	+= wl3501_cs.o
+ 
+ obj-$(CONFIG_USB_NET_RNDIS_WLAN)	+= rndis_wlan.o
++KCOV_INSTRUMENT := y
+ 
+ obj-$(CONFIG_MAC80211_HWSIM)	+= mac80211_hwsim.o
+ 
++
+ obj-$(CONFIG_VIRT_WIFI)	+= virt_wifi.o
+diff --git a/drivers/net/wireless/ath/ar5523/Makefile b/drivers/net/wireless/ath/ar5523/Makefile
+index 34efa5772096..7dabd8a61290 100644
+--- a/drivers/net/wireless/ath/ar5523/Makefile
++++ b/drivers/net/wireless/ath/ar5523/Makefile
+@@ -1,2 +1,4 @@
+ # SPDX-License-Identifier: ISC
+ obj-$(CONFIG_AR5523)   := ar5523.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/ath/ath10k/Makefile b/drivers/net/wireless/ath/ath10k/Makefile
+index 142c777b287f..3a3a5a93323a 100644
+--- a/drivers/net/wireless/ath/ath10k/Makefile
++++ b/drivers/net/wireless/ath/ath10k/Makefile
+@@ -42,3 +42,6 @@ ath10k_snoc-y += qmi.o \
+ 
+ # for tracing framework to find trace.h
+ CFLAGS_trace.o := -I$(src)
++
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/ath/ath6kl/Makefile b/drivers/net/wireless/ath/ath6kl/Makefile
+index dc2b3b46781e..e21ce7282430 100644
+--- a/drivers/net/wireless/ath/ath6kl/Makefile
++++ b/drivers/net/wireless/ath/ath6kl/Makefile
+@@ -47,3 +47,6 @@ ath6kl_usb-y += usb.o
+ 
+ # for tracing framework to find trace.h
+ CFLAGS_trace.o := -I$(src)
++
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/ath/ath9k/Makefile b/drivers/net/wireless/ath/ath9k/Makefile
+index eff94bcd1f0a..24de6fa1a52a 100644
+--- a/drivers/net/wireless/ath/ath9k/Makefile
++++ b/drivers/net/wireless/ath/ath9k/Makefile
+@@ -78,4 +78,6 @@ ath9k_htc-$(CONFIG_ATH9K_HTC_DEBUGFS) += htc_drv_debug.o
+ 
+ obj-$(CONFIG_ATH9K_HTC) += ath9k_htc.o
+ 
++KCOV_INSTRUMENT := y
++
+ obj-$(CONFIG_ATH9K_PCI_NO_EEPROM) += ath9k_pci_owl_loader.o
+diff --git a/drivers/net/wireless/ath/carl9170/Makefile b/drivers/net/wireless/ath/carl9170/Makefile
+index 1a81868ce26d..d597d7614d09 100644
+--- a/drivers/net/wireless/ath/carl9170/Makefile
++++ b/drivers/net/wireless/ath/carl9170/Makefile
+@@ -3,3 +3,6 @@ carl9170-objs := main.o usb.o cmd.o mac.o phy.o led.o fw.o tx.o rx.o
+ carl9170-$(CONFIG_CARL9170_DEBUGFS) += debug.o
+ 
+ obj-$(CONFIG_CARL9170) += carl9170.o
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/net/wireless/intersil/orinoco/Makefile b/drivers/net/wireless/intersil/orinoco/Makefile
+index 0c29c56c88d6..435a48aaf40c 100644
+--- a/drivers/net/wireless/intersil/orinoco/Makefile
++++ b/drivers/net/wireless/intersil/orinoco/Makefile
+@@ -13,3 +13,5 @@ obj-$(CONFIG_TMD_HERMES)	+= orinoco_tmd.o
+ obj-$(CONFIG_NORTEL_HERMES)	+= orinoco_nortel.o
+ obj-$(CONFIG_PCMCIA_SPECTRUM)	+= spectrum_cs.o
+ obj-$(CONFIG_ORINOCO_USB)	+= orinoco_usb.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/intersil/p54/Makefile b/drivers/net/wireless/intersil/p54/Makefile
+index d71651ff904e..74791a68af6b 100644
+--- a/drivers/net/wireless/intersil/p54/Makefile
++++ b/drivers/net/wireless/intersil/p54/Makefile
+@@ -6,3 +6,5 @@ obj-$(CONFIG_P54_COMMON)	+= p54common.o
+ obj-$(CONFIG_P54_USB)		+= p54usb.o
+ obj-$(CONFIG_P54_PCI)		+= p54pci.o
+ obj-$(CONFIG_P54_SPI)		+= p54spi.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/marvell/libertas/Makefile b/drivers/net/wireless/marvell/libertas/Makefile
+index 41b9b440a542..6f97ed8ab78c 100644
+--- a/drivers/net/wireless/marvell/libertas/Makefile
++++ b/drivers/net/wireless/marvell/libertas/Makefile
+@@ -20,3 +20,5 @@ obj-$(CONFIG_LIBERTAS_USB) += usb8xxx.o
+ obj-$(CONFIG_LIBERTAS_CS)  += libertas_cs.o
+ obj-$(CONFIG_LIBERTAS_SDIO) += libertas_sdio.o
+ obj-$(CONFIG_LIBERTAS_SPI) += libertas_spi.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/marvell/libertas_tf/Makefile b/drivers/net/wireless/marvell/libertas_tf/Makefile
+index 9360568b4512..8e9b4171d0ca 100644
+--- a/drivers/net/wireless/marvell/libertas_tf/Makefile
++++ b/drivers/net/wireless/marvell/libertas_tf/Makefile
+@@ -5,3 +5,6 @@ libertas_tf_usb-objs += if_usb.o
+ 
+ obj-$(CONFIG_LIBERTAS_THINFIRM) += libertas_tf.o
+ obj-$(CONFIG_LIBERTAS_THINFIRM_USB) += libertas_tf_usb.o
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/net/wireless/marvell/mwifiex/Makefile b/drivers/net/wireless/marvell/mwifiex/Makefile
+index fdfd9bf15ed4..aff4a68e77e0 100644
+--- a/drivers/net/wireless/marvell/mwifiex/Makefile
++++ b/drivers/net/wireless/marvell/mwifiex/Makefile
+@@ -55,3 +55,5 @@ mwifiex_usb-y += usb.o
+ obj-$(CONFIG_MWIFIEX_USB) += mwifiex_usb.o
+ 
+ ccflags-y += -D__CHECK_ENDIAN
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/mediatek/mt7601u/Makefile b/drivers/net/wireless/mediatek/mt7601u/Makefile
+index 30f2391c782b..d6f56b8bac2e 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/Makefile
++++ b/drivers/net/wireless/mediatek/mt7601u/Makefile
+@@ -6,3 +6,6 @@ mt7601u-objs	= \
+ 	mac.o util.o debugfs.o tx.o
+ 
+ CFLAGS_trace.o := -I$(src)
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/net/wireless/ralink/rt2x00/Makefile b/drivers/net/wireless/ralink/rt2x00/Makefile
+index de030ebcdf6e..157dcba6fd6a 100644
+--- a/drivers/net/wireless/ralink/rt2x00/Makefile
++++ b/drivers/net/wireless/ralink/rt2x00/Makefile
+@@ -24,3 +24,5 @@ obj-$(CONFIG_RT2500USB)			+= rt2500usb.o
+ obj-$(CONFIG_RT73USB)			+= rt73usb.o
+ obj-$(CONFIG_RT2800USB)			+= rt2800usb.o
+ obj-$(CONFIG_RT2800SOC)			+= rt2800soc.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/Makefile b/drivers/net/wireless/realtek/rtl818x/rtl8187/Makefile
+index 0bf64dfb233a..c5d460cf3322 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/Makefile
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/Makefile
+@@ -4,3 +4,6 @@ rtl8187-objs		:= dev.o rtl8225.o leds.o rfkill.o
+ obj-$(CONFIG_RTL8187)	+= rtl8187.o
+ 
+ ccflags-y += -I $(srctree)/$(src)/..
++
+++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/net/wireless/realtek/rtlwifi/Makefile b/drivers/net/wireless/realtek/rtlwifi/Makefile
+index 09c30e428375..1960bc8af3ad 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/Makefile
++++ b/drivers/net/wireless/realtek/rtlwifi/Makefile
+@@ -31,3 +31,5 @@ obj-$(CONFIG_RTLBTCOEXIST)	+= btcoexist/
+ obj-$(CONFIG_RTL8723_COMMON)	+= rtl8723com/
+ obj-$(CONFIG_RTL8821AE)		+= rtl8821ae/
+ obj-$(CONFIG_RTL8192EE)		+= rtl8192ee/
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile
+index 8b3921fd2cb6..ac3cc0e6c1c4 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile
+@@ -11,3 +11,5 @@ rtl8192cu-objs :=		\
+ 		trx.o
+ 
+ obj-$(CONFIG_RTL8192CU) += rtl8192cu.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/rsi/Makefile b/drivers/net/wireless/rsi/Makefile
+index ff87121a5928..6cae266f0a22 100644
+--- a/drivers/net/wireless/rsi/Makefile
++++ b/drivers/net/wireless/rsi/Makefile
+@@ -13,3 +13,5 @@ rsi_sdio-y			+= rsi_91x_sdio.o rsi_91x_sdio_ops.o
+ obj-$(CONFIG_RSI_91X) 		+= rsi_91x.o
+ obj-$(CONFIG_RSI_SDIO)		+= rsi_sdio.o
+ obj-$(CONFIG_RSI_USB)		+= rsi_usb.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/zydas/Makefile b/drivers/net/wireless/zydas/Makefile
+index c70003d30a8f..ec037592b27c 100644
+--- a/drivers/net/wireless/zydas/Makefile
++++ b/drivers/net/wireless/zydas/Makefile
+@@ -2,3 +2,5 @@
+ obj-$(CONFIG_ZD1211RW)		+= zd1211rw/
+ 
+ obj-$(CONFIG_USB_ZD1201)	+= zd1201.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/net/wireless/zydas/zd1211rw/Makefile b/drivers/net/wireless/zydas/zd1211rw/Makefile
+index 1647a449ce1a..2faebaca6faf 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/Makefile
++++ b/drivers/net/wireless/zydas/zd1211rw/Makefile
+@@ -8,3 +8,5 @@ zd1211rw-objs := zd_chip.o zd_mac.o \
+ 
+ ccflags-$(CONFIG_ZD1211RW_DEBUG) := -DDEBUG
+ 
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/nfc/Makefile b/drivers/nfc/Makefile
+index 5393ba59b17d..8b15fb384df9 100644
+--- a/drivers/nfc/Makefile
++++ b/drivers/nfc/Makefile
+@@ -9,7 +9,10 @@ obj-$(CONFIG_NFC_MICROREAD)	+= microread/
+ obj-$(CONFIG_NFC_PN533)		+= pn533/
+ obj-$(CONFIG_NFC_MEI_PHY)	+= mei_phy.o
+ obj-$(CONFIG_NFC_SIM)		+= nfcsim.o
++
+ obj-$(CONFIG_NFC_PORT100)	+= port100.o
++
++
+ obj-$(CONFIG_NFC_MRVL)		+= nfcmrvl/
+ obj-$(CONFIG_NFC_TRF7970A)	+= trf7970a.o
+ obj-$(CONFIG_NFC_ST21NFCA)  	+= st21nfca/
+@@ -17,3 +20,5 @@ obj-$(CONFIG_NFC_ST_NCI)	+= st-nci/
+ obj-$(CONFIG_NFC_NXP_NCI)	+= nxp-nci/
+ obj-$(CONFIG_NFC_S3FWRN5)	+= s3fwrn5/
+ obj-$(CONFIG_NFC_ST95HF)	+= st95hf/
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/nfc/nfcmrvl/Makefile b/drivers/nfc/nfcmrvl/Makefile
+index e74de0cb3bb0..2ff4178afe7e 100644
+--- a/drivers/nfc/nfcmrvl/Makefile
++++ b/drivers/nfc/nfcmrvl/Makefile
+@@ -17,3 +17,5 @@ obj-$(CONFIG_NFC_MRVL_I2C) += nfcmrvl_i2c.o
+ 
+ nfcmrvl_spi-y += spi.o
+ obj-$(CONFIG_NFC_MRVL_SPI) += nfcmrvl_spi.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/nfc/pn533/Makefile b/drivers/nfc/pn533/Makefile
+index b9648337576f..e55174816b7a 100644
+--- a/drivers/nfc/pn533/Makefile
++++ b/drivers/nfc/pn533/Makefile
+@@ -9,4 +9,6 @@ pn532_uart-objs  = uart.o
+ obj-$(CONFIG_NFC_PN533)     += pn533.o
+ obj-$(CONFIG_NFC_PN533_USB) += pn533_usb.o
+ obj-$(CONFIG_NFC_PN533_I2C) += pn533_i2c.o
++
++KCOV_INSTRUMENT := y
+ obj-$(CONFIG_NFC_PN532_UART) += pn532_uart.o
+diff --git a/drivers/staging/greybus/Makefile b/drivers/staging/greybus/Makefile
+index 627e44f2a983..25b080e96db3 100644
+--- a/drivers/staging/greybus/Makefile
++++ b/drivers/staging/greybus/Makefile
+@@ -71,3 +71,5 @@ obj-$(CONFIG_GREYBUS_USB)		+= gb-usb.o
+ gb-arche-y	:= arche-platform.o arche-apb-ctrl.o
+ 
+ obj-$(CONFIG_GREYBUS_ARCHE)	+= gb-arche.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/staging/most/cdev/Makefile b/drivers/staging/most/cdev/Makefile
+index 9f4a8b8c9c27..c2cf8b7c18a4 100644
+--- a/drivers/staging/most/cdev/Makefile
++++ b/drivers/staging/most/cdev/Makefile
+@@ -3,3 +3,6 @@ obj-$(CONFIG_MOST_CDEV) += most_cdev.o
+ 
+ most_cdev-objs := cdev.o
+ ccflags-y += -I $(srctree)/drivers/staging/
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/staging/most/net/Makefile b/drivers/staging/most/net/Makefile
+index f0ac64dee71b..c03b5769c675 100644
+--- a/drivers/staging/most/net/Makefile
++++ b/drivers/staging/most/net/Makefile
+@@ -3,3 +3,6 @@ obj-$(CONFIG_MOST_NET) += most_net.o
+ 
+ most_net-objs := net.o
+ ccflags-y += -I $(srctree)/drivers/staging/
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/staging/most/sound/Makefile b/drivers/staging/most/sound/Makefile
+index a3d086c6ca70..c66e10ba105a 100644
+--- a/drivers/staging/most/sound/Makefile
++++ b/drivers/staging/most/sound/Makefile
+@@ -3,3 +3,5 @@ obj-$(CONFIG_MOST_SOUND) += most_sound.o
+ 
+ most_sound-objs := sound.o
+ ccflags-y += -I $(srctree)/drivers/staging/
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/staging/most/usb/Makefile b/drivers/staging/most/usb/Makefile
+index 83cf2ead7122..65edb0e08c62 100644
+--- a/drivers/staging/most/usb/Makefile
++++ b/drivers/staging/most/usb/Makefile
+@@ -3,3 +3,6 @@ obj-$(CONFIG_MOST_USB) += most_usb.o
+ 
+ most_usb-objs := usb.o
+ ccflags-y += -I $(srctree)/drivers/staging/
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/staging/most/video/Makefile b/drivers/staging/most/video/Makefile
+index 2d857d3cbcc8..9becd81e29dc 100644
+--- a/drivers/staging/most/video/Makefile
++++ b/drivers/staging/most/video/Makefile
+@@ -3,3 +3,6 @@ obj-$(CONFIG_MOST_VIDEO) += most_video.o
+ 
+ most_video-objs := video.o
+ ccflags-y += -I $(srctree)/drivers/staging/
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/staging/rtl8188eu/Makefile b/drivers/staging/rtl8188eu/Makefile
+index 7da911c2ab89..c9c885462a30 100644
+--- a/drivers/staging/rtl8188eu/Makefile
++++ b/drivers/staging/rtl8188eu/Makefile
+@@ -55,3 +55,6 @@ r8188eu-y :=				\
+ obj-$(CONFIG_R8188EU)	:= r8188eu.o
+ 
+ ccflags-y += -I$(srctree)/$(src)/include
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/staging/vt6656/Makefile b/drivers/staging/vt6656/Makefile
+index b64c0d87f612..221b89abb078 100644
+--- a/drivers/staging/vt6656/Makefile
++++ b/drivers/staging/vt6656/Makefile
+@@ -19,3 +19,6 @@ vt6656_stage-y +=	main_usb.o \
+ 			int.o
+ 
+ obj-$(CONFIG_VT6656) +=	vt6656_stage.o
++
++KCOV_INSTRUMENT := y
++
+diff --git a/drivers/staging/wlan-ng/Makefile b/drivers/staging/wlan-ng/Makefile
+index 1d24b0f86eee..657912fab25a 100644
+--- a/drivers/staging/wlan-ng/Makefile
++++ b/drivers/staging/wlan-ng/Makefile
+@@ -6,3 +6,5 @@ prism2_usb-y := prism2usb.o \
+ 		p80211req.o \
+ 		p80211wep.o \
+ 		p80211netdev.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/atm/Makefile b/drivers/usb/atm/Makefile
+index 7ac65ce1aa8a..9d7f32c11908 100644
+--- a/drivers/usb/atm/Makefile
++++ b/drivers/usb/atm/Makefile
+@@ -7,3 +7,4 @@ obj-$(CONFIG_USB_SPEEDTOUCH)	+= speedtch.o
+ obj-$(CONFIG_USB_UEAGLEATM)	+= ueagle-atm.o
+ obj-$(CONFIG_USB_ATM)		+= usbatm.o
+ obj-$(CONFIG_USB_XUSBATM)	+= xusbatm.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/c67x00/Makefile b/drivers/usb/c67x00/Makefile
+index 0cde62d06e5d..6efdd8d71ff6 100644
+--- a/drivers/usb/c67x00/Makefile
++++ b/drivers/usb/c67x00/Makefile
+@@ -6,3 +6,4 @@
+ obj-$(CONFIG_USB_C67X00_HCD)	+= c67x00.o
+ 
+ c67x00-y := c67x00-drv.o c67x00-ll-hpi.o c67x00-hcd.o c67x00-sched.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/chipidea/Makefile b/drivers/usb/chipidea/Makefile
+index 12df94f78f72..5d41a035d7a2 100644
+--- a/drivers/usb/chipidea/Makefile
++++ b/drivers/usb/chipidea/Makefile
+@@ -16,3 +16,4 @@ obj-$(CONFIG_USB_CHIPIDEA_PCI)	+= ci_hdrc_pci.o
+ 
+ obj-$(CONFIG_USB_CHIPIDEA_OF)	+= usbmisc_imx.o ci_hdrc_imx.o
+ obj-$(CONFIG_USB_CHIPIDEA_OF)	+= ci_hdrc_tegra.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/class/Makefile b/drivers/usb/class/Makefile
+index 5d393a28f7f2..60db131d7da3 100644
+--- a/drivers/usb/class/Makefile
++++ b/drivers/usb/class/Makefile
+@@ -8,3 +8,4 @@ obj-$(CONFIG_USB_ACM)		+= cdc-acm.o
+ obj-$(CONFIG_USB_PRINTER)	+= usblp.o
+ obj-$(CONFIG_USB_WDM)		+= cdc-wdm.o
+ obj-$(CONFIG_USB_TMC)		+= usbtmc.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/common/Makefile b/drivers/usb/common/Makefile
+index 8ac4d21ef5c8..67f6be417025 100644
+--- a/drivers/usb/common/Makefile
++++ b/drivers/usb/common/Makefile
+@@ -11,3 +11,4 @@ usb-common-$(CONFIG_USB_LED_TRIG) += led.o
+ obj-$(CONFIG_USB_CONN_GPIO)	+= usb-conn-gpio.o
+ obj-$(CONFIG_USB_OTG_FSM) += usb-otg-fsm.o
+ obj-$(CONFIG_USB_ULPI_BUS)	+= ulpi.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/core/Makefile b/drivers/usb/core/Makefile
+index 18e874b0441e..dd4dcde00b41 100644
+--- a/drivers/usb/core/Makefile
++++ b/drivers/usb/core/Makefile
+@@ -15,3 +15,4 @@ usbcore-$(CONFIG_ACPI)		+= usb-acpi.o
+ obj-$(CONFIG_USB)		+= usbcore.o
+ 
+ obj-$(CONFIG_USB_LEDS_TRIGGER_USBPORT)	+= ledtrig-usbport.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
+index 2b27d232d7a7..0abe12167d3c 100644
+--- a/drivers/usb/core/driver.c
++++ b/drivers/usb/core/driver.c
+@@ -264,6 +264,9 @@ static int usb_probe_device(struct device *dev)
+ 
+ 	if (!error)
+ 		error = udriver->probe(udev);
++
++	dev_err(dev, "mark:%s: usb_probe_device completed with error=%d\n", __func__, error);
++
+ 	return error;
+ }
+ 
+diff --git a/drivers/usb/dwc2/Makefile b/drivers/usb/dwc2/Makefile
+index 440320cc20a4..bc2e37ac1552 100644
+--- a/drivers/usb/dwc2/Makefile
++++ b/drivers/usb/dwc2/Makefile
+@@ -27,3 +27,5 @@ endif
+ 
+ obj-$(CONFIG_USB_DWC2_PCI)		+= dwc2_pci.o
+ dwc2_pci-y				:= pci.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/dwc3/Makefile b/drivers/usb/dwc3/Makefile
+index ae86da0dc5bd..67cb13f483a0 100644
+--- a/drivers/usb/dwc3/Makefile
++++ b/drivers/usb/dwc3/Makefile
+@@ -51,3 +51,5 @@ obj-$(CONFIG_USB_DWC3_MESON_G12A)	+= dwc3-meson-g12a.o
+ obj-$(CONFIG_USB_DWC3_OF_SIMPLE)	+= dwc3-of-simple.o
+ obj-$(CONFIG_USB_DWC3_ST)		+= dwc3-st.o
+ obj-$(CONFIG_USB_DWC3_QCOM)		+= dwc3-qcom.o
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/early/Makefile b/drivers/usb/early/Makefile
+index 7b77b49d3b8c..01d3932387b2 100644
+--- a/drivers/usb/early/Makefile
++++ b/drivers/usb/early/Makefile
+@@ -5,3 +5,4 @@
+ 
+ obj-$(CONFIG_EARLY_PRINTK_DBGP) += ehci-dbgp.o
+ obj-$(CONFIG_EARLY_PRINTK_USB_XDBC) += xhci-dbc.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
+index 130dad7130b6..f1c8344cd99c 100644
+--- a/drivers/usb/gadget/Makefile
++++ b/drivers/usb/gadget/Makefile
+@@ -11,3 +11,4 @@ libcomposite-y			:= usbstring.o config.o epautoconf.o
+ libcomposite-y			+= composite.o functions.o configfs.o u_f.o
+ 
+ obj-$(CONFIG_USB_GADGET)	+= udc/ function/ legacy/
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
+index b191361257cc..67f3476d0d3e 100644
+--- a/drivers/usb/host/Makefile
++++ b/drivers/usb/host/Makefile
+@@ -88,3 +88,4 @@ obj-$(CONFIG_USB_HCD_BCMA)	+= bcma-hcd.o
+ obj-$(CONFIG_USB_HCD_SSB)	+= ssb-hcd.o
+ obj-$(CONFIG_USB_FOTG210_HCD)	+= fotg210-hcd.o
+ obj-$(CONFIG_USB_MAX3421_HCD)	+= max3421-hcd.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/image/Makefile b/drivers/usb/image/Makefile
+index 8997c81ba86b..ed57b5b0d36e 100644
+--- a/drivers/usb/image/Makefile
++++ b/drivers/usb/image/Makefile
+@@ -5,3 +5,4 @@
+ 
+ obj-$(CONFIG_USB_MDC800)	+= mdc800.o
+ obj-$(CONFIG_USB_MICROTEK)	+= microtek.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/isp1760/Makefile b/drivers/usb/isp1760/Makefile
+index 9bb09e8290c4..4d7cb8695558 100644
+--- a/drivers/usb/isp1760/Makefile
++++ b/drivers/usb/isp1760/Makefile
+@@ -4,3 +4,4 @@ isp1760-$(CONFIG_USB_ISP1760_HCD) += isp1760-hcd.o
+ isp1760-$(CONFIG_USB_ISP1761_UDC) += isp1760-udc.o
+ 
+ obj-$(CONFIG_USB_ISP1760)	+= isp1760.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/misc/Makefile b/drivers/usb/misc/Makefile
+index 0d416eb624bb..b6aba204e885 100644
+--- a/drivers/usb/misc/Makefile
++++ b/drivers/usb/misc/Makefile
+@@ -30,3 +30,4 @@ obj-$(CONFIG_USB_CHAOSKEY)		+= chaoskey.o
+ 
+ obj-$(CONFIG_USB_SISUSBVGA)		+= sisusbvga/
+ obj-$(CONFIG_USB_LINK_LAYER_TEST)	+= lvstest.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/mon/Makefile b/drivers/usb/mon/Makefile
+index 09f43e89633c..b4a0eeb47d3c 100644
+--- a/drivers/usb/mon/Makefile
++++ b/drivers/usb/mon/Makefile
+@@ -6,3 +6,4 @@
+ usbmon-y := mon_main.o mon_stat.o mon_text.o mon_bin.o
+ 
+ obj-$(CONFIG_USB_MON)	+= usbmon.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/mtu3/Makefile b/drivers/usb/mtu3/Makefile
+index 3bf8cbcc1add..75622269eec3 100644
+--- a/drivers/usb/mtu3/Makefile
++++ b/drivers/usb/mtu3/Makefile
+@@ -24,6 +24,7 @@ endif
+ ifneq ($(CONFIG_USB_MTU3_DUAL_ROLE),)
+ 	mtu3-y	+= mtu3_dr.o
+ endif
++KCOV_INSTRUMENT := y
+ 
+ ifneq ($(CONFIG_DEBUG_FS),)
+ 	mtu3-y	+= mtu3_debugfs.o
+diff --git a/drivers/usb/musb/Makefile b/drivers/usb/musb/Makefile
+index 932247360a9f..c9090bc59dca 100644
+--- a/drivers/usb/musb/Makefile
++++ b/drivers/usb/musb/Makefile
+@@ -36,3 +36,4 @@ musb_hdrc-$(CONFIG_USB_TI_CPPI_DMA)		+= cppi_dma.o
+ musb_hdrc-$(CONFIG_USB_TUSB_OMAP_DMA)		+= tusb6010_omap.o
+ musb_hdrc-$(CONFIG_USB_UX500_DMA)		+= ux500_dma.o
+ musb_hdrc-$(CONFIG_USB_TI_CPPI41_DMA)		+= musb_cppi41.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/phy/Makefile b/drivers/usb/phy/Makefile
+index df1d99010079..566d74f77ea2 100644
+--- a/drivers/usb/phy/Makefile
++++ b/drivers/usb/phy/Makefile
+@@ -24,3 +24,4 @@ obj-$(CONFIG_USB_MXS_PHY)		+= phy-mxs-usb.o
+ obj-$(CONFIG_USB_ULPI)			+= phy-ulpi.o
+ obj-$(CONFIG_USB_ULPI_VIEWPORT)		+= phy-ulpi-viewport.o
+ obj-$(CONFIG_KEYSTONE_USB_PHY)		+= phy-keystone.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/renesas_usbhs/Makefile b/drivers/usb/renesas_usbhs/Makefile
+index a1fed56b0957..7c800998bbec 100644
+--- a/drivers/usb/renesas_usbhs/Makefile
++++ b/drivers/usb/renesas_usbhs/Makefile
+@@ -14,3 +14,4 @@ endif
+ ifneq ($(CONFIG_USB_RENESAS_USBHS_UDC),)
+ 	renesas_usbhs-y		+= mod_gadget.o
+ endif
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/serial/Makefile b/drivers/usb/serial/Makefile
+index 2d491e434f11..c38615072e9f 100644
+--- a/drivers/usb/serial/Makefile
++++ b/drivers/usb/serial/Makefile
+@@ -63,3 +63,4 @@ obj-$(CONFIG_USB_SERIAL_WISHBONE)		+= wishbone-serial.o
+ obj-$(CONFIG_USB_SERIAL_WHITEHEAT)		+= whiteheat.o
+ obj-$(CONFIG_USB_SERIAL_XIRCOM)			+= keyspan_pda.o
+ obj-$(CONFIG_USB_SERIAL_XSENS_MT)		+= xsens_mt.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/storage/Makefile b/drivers/usb/storage/Makefile
+index 46635fa4a340..b8e63daaae08 100644
+--- a/drivers/usb/storage/Makefile
++++ b/drivers/usb/storage/Makefile
+@@ -45,3 +45,4 @@ ums-realtek-y		:= realtek_cr.o
+ ums-sddr09-y		:= sddr09.o
+ ums-sddr55-y		:= sddr55.o
+ ums-usbat-y		:= shuttle_usbat.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/typec/Makefile b/drivers/usb/typec/Makefile
+index 7753a5c3cd46..057ec3439286 100644
+--- a/drivers/usb/typec/Makefile
++++ b/drivers/usb/typec/Makefile
+@@ -7,3 +7,5 @@ obj-$(CONFIG_TYPEC_UCSI)	+= ucsi/
+ obj-$(CONFIG_TYPEC_HD3SS3220)	+= hd3ss3220.o
+ obj-$(CONFIG_TYPEC_TPS6598X)	+= tps6598x.o
+ obj-$(CONFIG_TYPEC)		+= mux/
++
++KCOV_INSTRUMENT := y
+diff --git a/drivers/usb/usbip/Makefile b/drivers/usb/usbip/Makefile
+index f4c8f3840262..efdd9893fdb8 100644
+--- a/drivers/usb/usbip/Makefile
++++ b/drivers/usb/usbip/Makefile
+@@ -12,3 +12,4 @@ usbip-host-y := stub_dev.o stub_main.o stub_rx.o stub_tx.o
+ 
+ obj-$(CONFIG_USBIP_VUDC) += usbip-vudc.o
+ usbip-vudc-y := vudc_dev.o vudc_sysfs.o vudc_tx.o vudc_rx.o vudc_transfer.o vudc_main.o
++KCOV_INSTRUMENT := y
+diff --git a/drivers/w1/masters/Makefile b/drivers/w1/masters/Makefile
+index dae629b7ab49..d76cafd5caba 100644
+--- a/drivers/w1/masters/Makefile
++++ b/drivers/w1/masters/Makefile
+@@ -5,6 +5,9 @@
+ 
+ obj-$(CONFIG_W1_MASTER_MATROX)		+= matrox_w1.o
+ obj-$(CONFIG_W1_MASTER_DS2490)		+= ds2490.o
++
++KCOV_INSTRUMENT_ds2490.o := y
++
+ obj-$(CONFIG_W1_MASTER_DS2482)		+= ds2482.o
+ obj-$(CONFIG_W1_MASTER_MXC)		+= mxc_w1.o
+ 
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 2ee352bf3372..a974e22a69bc 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -33,6 +33,8 @@ obj-$(CONFIG_WDTPCI) += wdt_pci.o
+ # USB-based Watchdog Cards
+ obj-$(CONFIG_USBPCWATCHDOG) += pcwd_usb.o
+ 
++KCOV_INSTRUMENT_pcwd_usb.o := y
++
+ # ALPHA Architecture
+ 
+ # ARM Architecture
+diff --git a/sound/usb/6fire/Makefile b/sound/usb/6fire/Makefile
+index 7d353bbf7493..4eabb8e7b302 100644
+--- a/sound/usb/6fire/Makefile
++++ b/sound/usb/6fire/Makefile
+@@ -2,3 +2,4 @@
+ snd-usb-6fire-objs += chip.o comm.o midi.o control.o firmware.o pcm.o
+ obj-$(CONFIG_SND_USB_6FIRE) += snd-usb-6fire.o
+ 
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/Makefile b/sound/usb/Makefile
+index 78edd7d2f418..3a658433fd61 100644
+--- a/sound/usb/Makefile
++++ b/sound/usb/Makefile
+@@ -33,3 +33,4 @@ obj-$(CONFIG_SND_USB_US122L) += snd-usbmidi-lib.o
+ 
+ obj-$(CONFIG_SND) += misc/ usx2y/ caiaq/ 6fire/ hiface/ bcd2000/
+ obj-$(CONFIG_SND_USB_LINE6)	+= line6/
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/bcd2000/Makefile b/sound/usb/bcd2000/Makefile
+index e2d916e24787..83b6d92c0702 100644
+--- a/sound/usb/bcd2000/Makefile
++++ b/sound/usb/bcd2000/Makefile
+@@ -2,3 +2,5 @@
+ snd-bcd2000-y := bcd2000.o
+ 
+ obj-$(CONFIG_SND_BCD2000) += snd-bcd2000.o
++
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/caiaq/Makefile b/sound/usb/caiaq/Makefile
+index 9a99c17a2c1b..569b2a63399f 100644
+--- a/sound/usb/caiaq/Makefile
++++ b/sound/usb/caiaq/Makefile
+@@ -3,3 +3,4 @@ snd-usb-caiaq-y := device.o audio.o midi.o control.o
+ snd-usb-caiaq-$(CONFIG_SND_USB_CAIAQ_INPUT) += input.o
+ 
+ obj-$(CONFIG_SND_USB_CAIAQ) += snd-usb-caiaq.o
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/hiface/Makefile b/sound/usb/hiface/Makefile
+index 8f3b24e7d6c2..7b89e6e73ba6 100644
+--- a/sound/usb/hiface/Makefile
++++ b/sound/usb/hiface/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ snd-usb-hiface-objs := chip.o pcm.o
+ obj-$(CONFIG_SND_USB_HIFACE) += snd-usb-hiface.o
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/line6/Makefile b/sound/usb/line6/Makefile
+index 4ba98eb32119..5d95e1130a9c 100644
+--- a/sound/usb/line6/Makefile
++++ b/sound/usb/line6/Makefile
+@@ -17,3 +17,4 @@ obj-$(CONFIG_SND_USB_POD)	+= snd-usb-pod.o
+ obj-$(CONFIG_SND_USB_PODHD)	+= snd-usb-podhd.o
+ obj-$(CONFIG_SND_USB_TONEPORT)	+= snd-usb-toneport.o
+ obj-$(CONFIG_SND_USB_VARIAX)	+= snd-usb-variax.o
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/misc/Makefile b/sound/usb/misc/Makefile
+index 068ecd7bc043..aceb1782ffb8 100644
+--- a/sound/usb/misc/Makefile
++++ b/sound/usb/misc/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ snd-ua101-objs := ua101.o
+ obj-$(CONFIG_SND_USB_UA101) += snd-ua101.o
++KCOV_INSTRUMENT := y
+diff --git a/sound/usb/usx2y/Makefile b/sound/usb/usx2y/Makefile
+index cc4c2f1efab2..0428206c1f2a 100644
+--- a/sound/usb/usx2y/Makefile
++++ b/sound/usb/usx2y/Makefile
+@@ -4,3 +4,5 @@ snd-usb-us122l-objs := us122l.o
+ 
+ obj-$(CONFIG_SND_USB_USX2Y) += snd-usb-usx2y.o
+ obj-$(CONFIG_SND_USB_US122L) += snd-usb-us122l.o
++
++KCOV_INSTRUMENT := y
+-- 
+2.20.1
+
