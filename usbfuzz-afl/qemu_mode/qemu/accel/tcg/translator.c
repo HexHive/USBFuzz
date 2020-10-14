@@ -14,6 +14,7 @@
 #include "tcg/tcg.h"
 #include "tcg/tcg-op.h"
 #include "exec/exec-all.h"
+#include "include/exec/cpu_ldst.h"
 #include "exec/gen-icount.h"
 #include "exec/log.h"
 #include "exec/translator.h"

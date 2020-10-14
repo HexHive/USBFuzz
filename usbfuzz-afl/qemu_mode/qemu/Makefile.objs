@@ -83,6 +83,8 @@ common-obj-y += qmp-introspect.o
 common-obj-y += qmp.o hmp.o
 endif
 
+common-obj-y += afl-inst.o
+
 #######################################################################
 # Target-independent parts used in system and user emulation
 common-obj-y += cpus-common.o

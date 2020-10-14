@@ -234,6 +234,8 @@ static void usb_serial_handle_control(USBDevice *dev, USBPacket *p,
     USBSerialState *s = (USBSerialState *)dev;
     int ret;
 
+    dump_request(request, value, index, length);
+
     DPRINTF("got control %x, value %x\n",request, value);
     ret = usb_desc_handle_control(dev, p, request, value, index, length, data);
     if (ret >= 0) {

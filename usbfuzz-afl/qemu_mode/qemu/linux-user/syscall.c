@@ -117,6 +117,8 @@ int __clone2(int (*fn)(void *), void *child_stack_base,
 
 #include "qemu.h"
 
+extern unsigned int afl_forksrv_pid;
+
 #ifndef CLONE_IO
 #define CLONE_IO                0x80000000      /* Clone io context */
 #endif
@@ -11740,9 +11742,17 @@ abi_long do_syscall(void *cpu_env, int num, abi_long arg1,
         break;
 
     case TARGET_NR_tgkill:
-        ret = get_errno(safe_tgkill((int)arg1, (int)arg2,
-                        target_to_host_signal(arg3)));
-        break;
+    {
+        int pid  = (int)arg1,
+            tgid = (int)arg2,
+            sig  = target_to_host_signal(arg3);
+
+        /* Not entirely sure if the below is correct for all architectures. */
+        if(afl_forksrv_pid && afl_forksrv_pid == pid && sig == SIGABRT)
+            pid = tgid = getpid();
+        ret = get_errno(safe_tgkill(pid, tgid, sig));
+    }
+    break;
 
 #ifdef TARGET_NR_set_robust_list
     case TARGET_NR_set_robust_list:

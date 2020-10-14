@@ -241,4 +241,6 @@ int usb_desc_get_descriptor(USBDevice *dev, USBPacket *p,
 int usb_desc_handle_control(USBDevice *dev, USBPacket *p,
         int request, int value, int index, int length, uint8_t *data);
 
+extern void dump_request(int request, int value, int index, int length);
+
 #endif /* QEMU_HW_USB_DESC_H */

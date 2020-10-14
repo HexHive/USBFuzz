@@ -126,6 +126,7 @@ enum ivshmem_registers {
     INTRSTATUS = 4,
     IVPOSITION = 8,
     DOORBELL = 12,
+    UMA_COMM = 16,
 };
 
 static inline uint32_t ivshmem_has_feature(IVShmemState *ivs,
@@ -205,6 +206,48 @@ static uint32_t ivshmem_IntrStatus_read(IVShmemState *s)
     return ret;
 }
 
+extern void stop_test(int val);
+extern int  run_in_afl(void);
+extern void reply_forkserver_handshake(void);
+
+static void ivshmem_uma_comm_write(IVShmemState *s, uint32_t val)
+{
+    printf("=== Write to UMA register with value: %d ===\n", val);
+
+
+    switch (val) {
+    case 1:
+        break;
+
+    case 2:
+        // TODO
+        break;
+    case 0x50:
+        // stop the test
+        if (run_in_afl())
+            stop_test(val);
+        break;
+
+    case 0x51:
+        if (run_in_afl())
+            stop_test(val);
+        break;
+
+    case 0x52:
+        if (run_in_afl())
+            reply_forkserver_handshake();
+        break;
+
+    default:
+        break;
+    }
+}
+
+static uint32_t ivshmem_uma_comm_read(IVShmemState *s)
+{
+    return 0;
+}
+
 static void ivshmem_io_write(void *opaque, hwaddr addr,
                              uint64_t val, unsigned size)
 {
@@ -242,6 +285,13 @@ static void ivshmem_io_write(void *opaque, hwaddr addr,
                                 vector, dest);
             }
             break;
+
+
+        case UMA_COMM:
+
+            ivshmem_uma_comm_write(s, val);
+            break;
+
         default:
             IVSHMEM_DPRINTF("Unhandled write " TARGET_FMT_plx "\n", addr);
     }
@@ -266,6 +316,10 @@ static uint64_t ivshmem_io_read(void *opaque, hwaddr addr,
 
         case IVPOSITION:
             ret = s->vm_id;
+            break;
+
+        case UMA_COMM:
+            ret = ivshmem_uma_comm_read(s);
             break;
 
         default:

@@ -129,6 +129,9 @@ int main(int argc, char **argv)
 #include "qapi/qmp/qerror.h"
 #include "sysemu/iothread.h"
 
+#include "afl.h"
+
+
 #define MAX_VIRTIO_CONSOLES 1
 #define MAX_SCLP_CONSOLES 1
 
@@ -4204,14 +4207,24 @@ int main(int argc, char **argv, char **envp)
                     exit(1);
                 }
                 break;
+
+            case QEMU_OPTION_usbDescFile:
+                usbDescFile = (char *)optarg;
+                break;
+
+            case QEMU_OPTION_usbDataFile:
+                usbDataFile = (char *)optarg;
+                break;
+
             default:
                 os_parse_cmd_args(popt->index, optarg);
             }
         }
     }
+
     /*
-     * Clear error location left behind by the loop.
-     * Best done right after the loop.  Do not insert code here!
+     * Clear error location left behindby the loop.
+     * Best done right aflDmesgAddrter the loop.  Do not insert code here!
      */
     loc_set_none();
 
@@ -4907,6 +4920,8 @@ int main(int argc, char **argv, char **envp)
     }
 
     os_setup_post();
+
+    afl_init();
 
     main_loop();
     replay_disable_events();

@@ -207,7 +207,7 @@ static const char *find_typename_by_alias(const char *alias)
     return NULL;
 }
 
-static DeviceClass *qdev_get_device_class(const char **driver, Error **errp)
+DeviceClass *qdev_get_device_class(const char **driver, Error **errp)
 {
     ObjectClass *oc;
     DeviceClass *dc;

@@ -1736,7 +1736,8 @@ void qemu_ram_set_idstr(RAMBlock *new_block, const char *name, DeviceState *dev)
     RAMBlock *block;
 
     assert(new_block);
-    assert(!new_block->idstr[0]);
+    /* assert(!new_block->idstr[0]); */
+    memset(new_block->idstr, 0, 256);
 
     if (dev) {
         char *id = qdev_get_dev_path(dev);

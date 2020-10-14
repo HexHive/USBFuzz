@@ -36,6 +36,14 @@
 
 //#define DEBUG_UNASSIGNED
 
+void
+memory_region_init_ram_nomigrate_with_ptr(MemoryRegion *mr,
+                                          Object *owner,
+                                          const char *name,
+                                          void *ptr,
+                                          uint64_t size,
+                                          Error **errp);
+
 static unsigned memory_region_transaction_depth;
 static bool memory_region_update_pending;
 static bool ioeventfd_update_pending;
@@ -1531,6 +1539,22 @@ void memory_region_init_io(MemoryRegion *mr,
     mr->ops = ops ? ops : &unassigned_mem_ops;
     mr->opaque = opaque;
     mr->terminates = true;
+}
+
+void
+memory_region_init_ram_nomigrate_with_ptr(MemoryRegion *mr,
+                                          Object *owner,
+                                          const char *name,
+                                          void *ptr,
+                                          uint64_t size,
+                                          Error **errp)
+{
+    memory_region_init(mr, owner, name, size);
+    mr->ram = true;
+    mr->terminates = true;
+    mr->destructor = memory_region_destructor_none;
+    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, errp);
+    mr->dirty_log_mask = 0;
 }
 
 void memory_region_init_ram_nomigrate(MemoryRegion *mr,

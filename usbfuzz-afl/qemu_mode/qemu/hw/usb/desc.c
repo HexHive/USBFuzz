@@ -810,3 +810,120 @@ int usb_desc_handle_control(USBDevice *dev, USBPacket *p,
     }
     return ret;
 }
+
+
+static void dump_descriptor_info(int request, int value, int length) {
+    uint8_t type = value >> 8;
+
+    switch(type) {
+    case USB_DT_DEVICE:
+        printf("USB_DT_DEVICE,");
+        break;
+
+    case USB_DT_CONFIG:
+        printf("USB_DT_CONFIG,");
+        break;
+
+    case USB_DT_STRING:
+        printf("USB_DT_STRING,");
+        break;
+
+    case USB_DT_DEVICE_QUALIFIER:
+        printf("USB_DT_DEVICE_QUALIFIER,");
+        break;
+
+    case USB_DT_OTHER_SPEED_CONFIG:
+        printf("USB_DT_OTHER_SPEED_CONFIG,");
+        break;
+
+    case USB_DT_BOS:
+        printf("USB_DT_BOS,");
+        break;
+
+    case USB_DT_DEBUG:
+        break;
+    default:
+        printf("Unkown descriptor,");
+        break;
+    }
+}
+
+
+void dump_request(int request, int value, int index, int length) {
+    int req_type = (request >> 8) & USB_TYPE_MASK;
+
+    switch (req_type) {
+    case USB_TYPE_STANDARD:
+        printf("USB_TYPE_STANDARD, ");
+        break;
+
+    case USB_TYPE_CLASS:
+        printf("USB_TYPE_CLASS, ");
+        break;
+
+    case USB_TYPE_VENDOR:
+        printf("USB_TYPE_VENDOR, ");
+        break;
+
+    default:
+        printf("USB_TYPE_UNKNOWN, ");
+        break;
+    }
+
+    switch(request) {
+
+    case DeviceOutRequest | USB_REQ_SET_ADDRESS:
+        printf("DeviceOutRequest|USB_REQ_SET_ADDRESS, ");
+        break;
+
+    case DeviceRequest | USB_REQ_GET_DESCRIPTOR:
+        printf("DeviceRequest|USB_REQ_GET_DESCRIPTOR, ");
+        dump_descriptor_info(request, value, length);
+        break;
+
+    case DeviceRequest | USB_REQ_GET_CONFIGURATION:
+        printf("DeviceRequest|USB_REQ_GET_CONFIGURATION, ");
+        break;
+
+    case DeviceOutRequest | USB_REQ_SET_CONFIGURATION:
+        printf("DeviceOutRequest|USB_REQ_SET_CONFIGURATION, ");
+        break;
+
+    case DeviceRequest | USB_REQ_GET_STATUS:
+        printf("DeviceRequest|USB_REQ_GET_STATUS, ");
+        break;
+
+    case DeviceOutRequest | USB_REQ_CLEAR_FEATURE:
+        printf("DeviceOutRequest|USB_REQ_CLEAR_FEATURE, ");
+        break;
+
+    case DeviceOutRequest | USB_REQ_SET_FEATURE:
+        printf("DeviceOutRequest|USB_REQ_SET_FEATURE, ");
+        break;
+
+    case DeviceOutRequest | USB_REQ_SET_SEL:
+    case DeviceOutRequest | USB_REQ_SET_ISOCH_DELAY:
+        printf("DeviceOutRequest|(USB_REQ_SET_SEL|USB_REQ_SET_ISOCH_DELAY), ");
+        break;
+
+    case InterfaceRequest | USB_REQ_GET_INTERFACE:
+        printf("InterfaceRequest|USB_REQ_GET_INTERFACE, ");
+        break;
+
+    case InterfaceOutRequest | USB_REQ_SET_INTERFACE:
+        printf("InterfaceOutRequest|USB_REQ_SET_INTERFACE, ");
+        break;
+
+    case VendorDeviceRequest | 'Q':
+        printf("VendorDeviceRequest|'Q', ");
+        break;
+
+    case VendorInterfaceRequest | 'Q':
+        printf("VendorInterfaceRequest|'Q', ");
+        break;
+    default:
+        printf("UNKNOWN, request=%x, ", request);
+    }
+
+    printf("value:%08x, index:%08x, length:%08x\n", value, index, length);
+}

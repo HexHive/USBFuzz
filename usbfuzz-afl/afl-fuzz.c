@@ -208,10 +208,10 @@ static u64 stage_finds[32],           /* Patterns found per fuzz stage    */
 static u32 rand_cnt;                  /* Random number counter            */
 
 static u64 total_cal_us,              /* Total calibration time (us)      */
-           total_cal_cycles;          /* Total calibration cycles         */
+           total_cal_cycles = 1;      /* Total calibration cycles         */
 
 static u64 total_bitmap_size,         /* Total bit count for all bitmaps  */
-           total_bitmap_entries;      /* Number of bitmaps counted        */
+           total_bitmap_entries = 1;  /* Number of bitmaps counted        */
 
 static s32 cpu_core_count;            /* CPU core count                   */
 
@@ -222,6 +222,15 @@ static s32 cpu_aff = -1;       	      /* Selected CPU core                */
 #endif /* HAVE_AFFINITY */
 
 static FILE* plot_file;               /* Gnuplot output file              */
+
+static void afl_atexit(void) {
+  if (forksrv_pid) {
+    if (kill(forksrv_pid, 0) != -1) {
+      // forkserver exist and is running
+      kill(forksrv_pid, SIGILL);
+    }
+  }
+}
 
 struct queue_entry {
 
@@ -1361,7 +1370,7 @@ EXP_ST void setup_shm(void) {
      fork server commands. This should be replaced with better auto-detection
      later on, perhaps? */
 
-  if (!dumb_mode) setenv(SHM_ENV_VAR, shm_str, 1);
+  if (!dumb_mode || qemu_mode > 1) setenv(SHM_ENV_VAR, shm_str, 1);
 
   ck_free(shm_str);
 
@@ -2035,8 +2044,10 @@ EXP_ST void init_forkserver(char** argv) {
 
     setsid();
 
-    dup2(dev_null_fd, 1);
-    dup2(dev_null_fd, 2);
+    if (!getenv("AFL_ENABLE_TARGET_OUTPUT")) {
+      dup2(dev_null_fd, 1);
+      dup2(dev_null_fd, 2);
+    }
 
     if (out_file) {
 
@@ -2108,14 +2119,16 @@ EXP_ST void init_forkserver(char** argv) {
   it.it_value.tv_sec = ((exec_tmout * FORK_WAIT_MULT) / 1000);
   it.it_value.tv_usec = ((exec_tmout * FORK_WAIT_MULT) % 1000) * 1000;
 
-  setitimer(ITIMER_REAL, &it, NULL);
+  if (qemu_mode <= 1)
+    setitimer(ITIMER_REAL, &it, NULL);
 
   rlen = read(fsrv_st_fd, &status, 4);
 
   it.it_value.tv_sec = 0;
   it.it_value.tv_usec = 0;
 
-  setitimer(ITIMER_REAL, &it, NULL);
+  if (qemu_mode <= 1)
+    setitimer(ITIMER_REAL, &it, NULL);
 
   /* If we have a four-byte "hello" message from the server, we're all set.
      Otherwise, try to figure out what went wrong. */
@@ -2126,7 +2139,7 @@ EXP_ST void init_forkserver(char** argv) {
   }
 
   if (child_timed_out)
-    FATAL("Timeout while initializing fork server (adjusting -t may help)");
+    WARNF("Timeout while initializing fork server (adjusting -t may help)");
 
   if (waitpid(forksrv_pid, &status, 0) <= 0)
     PFATAL("waitpid() failed");
@@ -2280,7 +2293,7 @@ static u8 run_target(char** argv, u32 timeout) {
      execve(). There is a bit of code duplication between here and 
      init_forkserver(), but c'est la vie. */
 
-  if (dumb_mode == 1 || no_forkserver) {
+  if ((dumb_mode == 1 && qemu_mode <= 1) || no_forkserver) {
 
     child_pid = fork();
 
@@ -2384,14 +2397,19 @@ static u8 run_target(char** argv, u32 timeout) {
 
   /* Configure timeout, as requested by user, then wait for child to terminate. */
 
-  it.it_value.tv_sec = (timeout / 1000);
-  it.it_value.tv_usec = (timeout % 1000) * 1000;
-
-  setitimer(ITIMER_REAL, &it, NULL);
+  if (qemu_mode <= 1) {
+    it.it_value.tv_sec = (timeout / 1000);
+    it.it_value.tv_usec = (timeout % 1000) * 1000;
+    setitimer(ITIMER_REAL, &it, NULL);
+  } else {
+    it.it_value.tv_sec = 30;
+    it.it_value.tv_usec = 0;
+    setitimer(ITIMER_REAL, &it, NULL);
+  }
 
   /* The SIGALRM handler simply kills the child_pid and sets child_timed_out. */
 
-  if (dumb_mode == 1 || no_forkserver) {
+  if ((dumb_mode == 1 && qemu_mode <= 1) || no_forkserver) {
 
     if (waitpid(child_pid, &status, 0) <= 0) PFATAL("waitpid() failed");
 
@@ -2402,6 +2420,11 @@ static u8 run_target(char** argv, u32 timeout) {
     if ((res = read(fsrv_st_fd, &status, 4)) != 4) {
 
       if (stop_soon) return 0;
+
+      if (qemu_mode > 1) {
+        init_forkserver(argv);
+        return FAULT_TMOUT;
+      }
       RPFATAL(res, "Unable to communicate with fork server (OOM?)");
 
     }
@@ -2413,6 +2436,7 @@ static u8 run_target(char** argv, u32 timeout) {
   it.it_value.tv_sec = 0;
   it.it_value.tv_usec = 0;
 
+  // if (qemu_mode <= 1)
   setitimer(ITIMER_REAL, &it, NULL);
 
   total_execs++;
@@ -2450,6 +2474,10 @@ static u8 run_target(char** argv, u32 timeout) {
 
   if (uses_asan && WEXITSTATUS(status) == MSAN_ERROR) {
     kill_signal = 0;
+    return FAULT_CRASH;
+  }
+
+  if (qemu_mode > 1 && WEXITSTATUS(status) != 0) {
     return FAULT_CRASH;
   }
 
@@ -2553,12 +2581,12 @@ static u8 calibrate_case(char** argv, struct queue_entry* q, u8* use_mem,
   q->cal_failed++;
 
   stage_name = "calibration";
-  stage_max  = fast_cal ? 3 : CAL_CYCLES;
+  stage_max  = 1 /*fast_cal ? 3 : CAL_CYCLES*/;
 
   /* Make sure the forkserver is up before we do anything, and let's not
      count its spin-up time toward binary calibration. */
 
-  if (dumb_mode != 1 && !no_forkserver && !forksrv_pid)
+  if ((qemu_mode > 1 ||  dumb_mode != 1) && !no_forkserver && !forksrv_pid)
     init_forkserver(argv);
 
   if (q->exec_cksum) memcpy(first_trace, trace_bits, MAP_SIZE);
@@ -2772,9 +2800,10 @@ static void perform_dry_run(char** argv) {
                "    If this test case is just a fluke, the other option is to just avoid it\n"
                "    altogether, and find one that is less of a CPU hog.\n", exec_tmout);
 
-          FATAL("Test case '%s' results in a timeout", fn);
+          WARNF("Test case '%s' results in a timeout", fn);
 
         }
+        break;
 
       case FAULT_CRASH:  
 
@@ -5043,25 +5072,25 @@ static u8 fuzz_one(char** argv) {
    * TRIMMING *
    ************/
 
-  if (!dumb_mode && !queue_cur->trim_done) {
+  /* if (!dumb_mode && !queue_cur->trim_done) { */
 
-    u8 res = trim_case(argv, queue_cur, in_buf);
+  /*   u8 res = trim_case(argv, queue_cur, in_buf); */
 
-    if (res == FAULT_ERROR)
-      FATAL("Unable to execute target application");
+  /*   if (res == FAULT_ERROR) */
+  /*     FATAL("Unable to execute target application"); */
 
-    if (stop_soon) {
-      cur_skipped_paths++;
-      goto abandon_entry;
-    }
+  /*   if (stop_soon) { */
+  /*     cur_skipped_paths++; */
+  /*     goto abandon_entry; */
+  /*   } */
 
-    /* Don't retry trimming, even if it failed. */
+  /*   /\* Don't retry trimming, even if it failed. *\/ */
 
-    queue_cur->trim_done = 1;
+  /*   queue_cur->trim_done = 1; */
 
-    if (len != queue_cur->len) len = queue_cur->len;
+  /*   if (len != queue_cur->len) len = queue_cur->len; */
 
-  }
+  /* } */
 
   memcpy(out_buf, in_buf, len);
 
@@ -6853,7 +6882,9 @@ EXP_ST void check_binary(u8* fname) {
 
   }
 
-  if (getenv("AFL_SKIP_BIN_CHECK")) return;
+  // if we are running qemu system emulation mode,
+  // we won't check the binary for additional info
+  if (qemu_mode > 1 || getenv("AFL_SKIP_BIN_CHECK")) return;
 
   /* Check for blatant user errors. */
 
@@ -7882,10 +7913,15 @@ int main(int argc, char** argv) {
 
       case 'Q': /* QEMU mode */
 
-        if (qemu_mode) FATAL("Multiple -Q options not supported");
-        qemu_mode = 1;
+        // if (qemu_mode) FATAL("Multiple -Q options not supported");
+        qemu_mode += 1;
 
-        if (!mem_limit_given) mem_limit = MEM_LIMIT_QEMU;
+        if (!mem_limit_given && qemu_mode == 1) {
+          mem_limit = MEM_LIMIT_QEMU;
+        } else if (qemu_mode > 1) {
+          mem_limit = 0;
+          
+        }
 
         break;
 
@@ -7908,7 +7944,7 @@ int main(int argc, char** argv) {
   if (dumb_mode) {
 
     if (crash_mode) FATAL("-C and -n are mutually exclusive");
-    if (qemu_mode)  FATAL("-Q and -n are mutually exclusive");
+    if (qemu_mode == 1)  FATAL("-Q and -n are mutually exclusive");
 
   }
 
@@ -7942,6 +7978,8 @@ int main(int argc, char** argv) {
 
   get_core_count();
 
+  atexit(afl_atexit);
+
 #ifdef HAVE_AFFINITY
   bind_to_free_cpu();
 #endif /* HAVE_AFFINITY */
@@ -7971,12 +8009,15 @@ int main(int argc, char** argv) {
 
   start_time = get_cur_time();
 
-  if (qemu_mode)
+  if (qemu_mode == 1)
     use_argv = get_qemu_argv(argv[0], argv + optind, argc - optind);
   else
     use_argv = argv + optind;
 
-  perform_dry_run(use_argv);
+  // If  we want to skip dry run,
+  // go and skip it
+  if (!getenv("AFL_NO_DRYRUN"))
+    perform_dry_run(use_argv);
 
   cull_queue();
 
@@ -8042,7 +8083,7 @@ int main(int argc, char** argv) {
     skipped_fuzz = fuzz_one(use_argv);
 
     if (!stop_soon && sync_id && !skipped_fuzz) {
-      
+
       if (!(sync_interval_cnt++ % SYNC_INTERVAL))
         sync_fuzzers(use_argv);
 

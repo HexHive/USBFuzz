@@ -141,11 +141,12 @@ static void do_token_setup(USBDevice *s, USBPacket *p)
     p->actual_length = 0;
     s->setup_len   = (s->setup_buf[7] << 8) | s->setup_buf[6];
     if (s->setup_len > sizeof(s->data_buf)) {
-        fprintf(stderr,
-                "usb_generic_handle_packet: ctrl buffer too small (%d > %zu)\n",
-                s->setup_len, sizeof(s->data_buf));
-        p->status = USB_RET_STALL;
-        return;
+        /* fprintf(stderr, */
+        /*         "usb_generic_handle_packet: ctrl buffer too small (%d > %zu)\n", */
+        /*         s->setup_len, sizeof(s->data_buf)); */
+        /* p->status = USB_RET_STALL; */
+        /* return; */
+        s->setup_len = sizeof(s->data_buf);
     }
 
     request = (s->setup_buf[0] << 8) | s->setup_buf[1];
@@ -274,11 +275,12 @@ static void do_parameter(USBDevice *s, USBPacket *p)
     index   = (s->setup_buf[5] << 8) | s->setup_buf[4];
 
     if (s->setup_len > sizeof(s->data_buf)) {
-        fprintf(stderr,
-                "usb_generic_handle_packet: ctrl buffer too small (%d > %zu)\n",
-                s->setup_len, sizeof(s->data_buf));
-        p->status = USB_RET_STALL;
-        return;
+        /* fprintf(stderr, */
+        /*         "usb_generic_handle_packet: ctrl buffer too small (%d > %zu)\n", */
+        /*         s->setup_len, sizeof(s->data_buf)); */
+        /* p->status = USB_RET_STALL; */
+        /* return; */
+        s->setup_len = sizeof(s->data_buf);
     }
 
     if (p->pid == USB_TOKEN_OUT) {

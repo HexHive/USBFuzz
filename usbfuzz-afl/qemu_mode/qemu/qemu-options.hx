@@ -3300,6 +3300,11 @@ from ./my_blob.bin.
 
 ETEXI
 
+DEF("usbDescFile", HAS_ARG, QEMU_OPTION_usbDescFile, \
+    "-usbDescFile usb descriptor input file\n", QEMU_ARCH_ALL)
+DEF("usbDataFile", HAS_ARG, QEMU_OPTION_usbDataFile, \
+    "-usbDataFile usb data input file\n", QEMU_ARCH_ALL)
+
 DEF("serial", HAS_ARG, QEMU_OPTION_serial, \
     "-serial dev     redirect the serial port to char device 'dev'\n",
     QEMU_ARCH_ALL)
