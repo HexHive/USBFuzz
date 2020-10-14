@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import argparse
+import signal
+
+from fuzzer import USBFuzz
+
+def main():
+    parser = argparse.ArgumentParser(description="USBFuzz: a tool for fuzzing usb drivers by device emulation")
+    parser.add_argument("--workdir", default="workdir", help="the work directory of the fuzzer")
+    parser.add_argument("--seeddir", default="seeddir", help="the directory containing the seeds")
+    parser.add_argument("--kernel_image", help="kernel image")
+    parser.add_argument("--os_image", default="./images/linux/stretch.img", help="OS image")
+    parser.add_argument("--aflfuzz_path", default="./usbfuzz-afl/afl-fuzz", help="path to afl-fuzz")
+    parser.add_argument("--afl_opts", help="Additional options to afl-fuzz")
+    parser.add_argument("--qemu_path", default="usbfuzz-afl/qemu_mode/qemu-build/x86_64-softmmu/qemu-system-x86_64", help="path to qemu")
+    args = parser.parse_args()
+
+    os_image = os.path.abspath(args.os_image)
+    kernel_image = None
+    if args.kernel_image != None:
+        kernel_image = os.path.abspath(args.kernel_image)
+    fuzzer = USBFuzz(args.workdir, args.seeddir,
+                     args.aflfuzz_path, args.qemu_path,
+                     os_image, kernel_image, args.afl_opts)
+
+    def ctrlc_handler(sig, frame):
+        print("stopping the fuzzer")
+        fuzzer.stop()
+        sys.exit(-1)
+
+
+    fuzzer.start()
+
+
+if __name__ == '__main__':
+    main()
