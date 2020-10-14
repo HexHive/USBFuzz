@@ -32,6 +32,9 @@ static pid_t __pid;
 
 #define FUZZ_DEV_ID "xxx__usbfuzz1__"
 
+static QEMUTimer timer;
+static void afl_timer_cb(void *opaque);
+
 static int try_setup_afl_shm(void);
 // static void setup_comm_dev(void);
 
@@ -58,6 +61,7 @@ int run_in_afl(void) {
     return in_afl;
 }
 
+static int test_wait = 1000;
 
 void start_test(void *opaque) {
     // DeviceState *ds = NULL;
@@ -82,10 +86,12 @@ void start_test(void *opaque) {
         detach_device(FUZZ_DEV_ID, &err);
     }
 
-    // g_usleep(10000000);
-
     memset(afl_area_ptr, 0, MAP_SIZE);
     attach_device("driver=usb-fuzz,id=" FUZZ_DEV_ID, &err);
+    AioContext *ctx = qemu_get_aio_context();
+    aio_timer_init(ctx, &timer, QEMU_CLOCK_HOST, SCALE_MS, afl_timer_cb, NULL);
+
+    timer_mod(&timer, qemu_clock_get_ms(QEMU_CLOCK_HOST) + test_wait);
 }
 
 void stop_test(int val) {
@@ -136,6 +142,13 @@ static int try_setup_afl_shm(void) {
     return 0;
 }
 
+static void target_ready_cb(void *opaque) {
+    printf("In target ready callback\n");
+    reply_forkserver_handshake();
+}
+
+static int target_wait = 30000;
+
 void afl_init(void) {
 
     printf("Initializing AFL\n");
@@ -153,6 +166,27 @@ void afl_init(void) {
     qemu_set_fd_handler(CTRL_FD, start_test, NULL, NULL);
     __pid =  getpid();
 
+    AioContext *ctx = qemu_get_aio_context();
+    aio_timer_init(ctx, &timer, QEMU_CLOCK_HOST, SCALE_MS, target_ready_cb, NULL);
+
+    char *target_wait_str = getenv("AFL_QEMU_TARGET_WAIT");
+    
+    if (target_wait_str) {
+        target_wait = atoi(target_wait_str);
+    }
+    printf("target_wait=%d\n", target_wait);
+
+    timer_mod(&timer, qemu_clock_get_ms(QEMU_CLOCK_HOST) + target_wait);
+
+    char *test_wait_str = getenv("AFL_QEMU_TEST_WAIT");
+
+    if (test_wait_str) {
+        test_wait = atoi(test_wait_str);
+    }
+
+    printf("test_wait=%d\n", test_wait);
+    printf("AFL INTI Completed\n");
+    
     /*
     if (write(STUS_FD, &pid, sizeof(pid)) != sizeof(pid)) {
         printf("Writing to STATUS FD failed, not running with AFL?\n");
@@ -182,6 +216,11 @@ static void detach_device(const char *id, Error **errp) {
 static int test_device_attached(void) {
     return test_dev_attached;
 }
+
+static void afl_timer_cb(void *opaque) {
+    stop_test(0);
+}
+
 
 /*
 static void setup_comm_dev(void) {

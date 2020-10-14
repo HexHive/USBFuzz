@@ -2423,7 +2423,7 @@ static u8 run_target(char** argv, u32 timeout) {
 
       if (qemu_mode > 1) {
         init_forkserver(argv);
-        return FAULT_TMOUT;
+        return FAULT_CRASH;
       }
       RPFATAL(res, "Unable to communicate with fork server (OOM?)");
 
